@@ -2140,6 +2140,7 @@
         (async () => {
             // Load from API if available
             await loadDataFromAPI();
+            state.data = RAW_DATA;
 
             // Initialize date range
             setDateRange('7days');
