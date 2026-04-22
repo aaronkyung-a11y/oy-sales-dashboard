@@ -1297,7 +1297,7 @@
                 const pct = Math.round(((sales7 - prev7Sales) / prev7Sales) * 100);
                 const cls = pct >= 0 ? 'positive' : 'negative';
                 const sgn = pct >= 0 ? '+' : '';
-                document.getElentById('sales7dComp').innerHTML = `<span class="${cls}">이전 7일 대비 ${sgn}${pct}%</span>`;
+                document.getElementById('sales7dComp').innerHTML = `<span class="${cls}">이전 7일 대비 ${sgn}${pct}%</span>`;
             } else {
                 document.getElementById('sales7dComp').textContent = '이저 기가 데이터 부족';
             }
