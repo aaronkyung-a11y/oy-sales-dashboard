@@ -19,61 +19,71 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-            background-color: #f5f6fa;
+            background-color: #f9f9f9;
             color: #333;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
+            background: white;
+            color: #333;
+            padding: 32px 20px;
             position: relative;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            border-bottom: 1px solid #e5e5e5;
         }
 
         .header h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
             margin-bottom: 8px;
         }
 
         .header p {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 16px;
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 0;
         }
 
-        .header .btn {
+        .header .btn-refresh {
             position: absolute;
             top: 20px;
             right: 20px;
             background: white;
-            color: #667eea;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             transition: all 0.2s;
         }
 
-        .header .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        .header .btn-refresh:hover {
+            border-color: #6b7c3e;
+            color: #6b7c3e;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        .upload-zone {
+        .upload-zone-button {
+            display: inline-block;
             background: white;
-            border: 2px dashed #667eea;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .upload-zone {
+            display: none;
+            background: white;
+            border: 2px dashed #ddd;
             border-radius: 12px;
             padding: 30px;
             text-align: center;
@@ -82,9 +92,13 @@
             transition: all 0.2s;
         }
 
+        .upload-zone.show {
+            display: block;
+        }
+
         .upload-zone:hover {
-            background: #f9f9ff;
-            border-color: #764ba2;
+            background: #fafafa;
+            border-color: #999;
         }
 
         .upload-zone input[type="file"] {
@@ -107,20 +121,64 @@
             color: #27ae60;
         }
 
+        .status-indicator {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .collapsible-section {
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 16px;
+        }
+
+        .section-header .toggle {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .section-header .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section-header.collapsed .toggle::before {
+            content: '▶';
+        }
+
+        .section-header:not(.collapsed) .toggle::before {
+            content: '▼';
+        }
+
+        .section-content {
+            display: block;
+        }
+
+        .section-header.collapsed ~ .section-content {
+            display: none;
+        }
+
         .controls {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 16px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 8px;
-            z-index: 50;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .controls-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 12px;
             margin-bottom: 12px;
         }
@@ -148,14 +206,14 @@
         }
 
         .btn.active {
-            background: #667eea;
+            background: #6b7c3e;
             color: white;
-            border-color: #667eea;
+            border-color: #6b7c3e;
         }
 
         .btn:hover:not(.active) {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: #6b7c3e;
+            color: #6b7c3e;
         }
 
         select {
@@ -180,10 +238,11 @@
             margin: 8px 0;
         }
 
-        .status-indicator {
+        input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 12px;
-            color: #666;
-            margin-top: 12px;
         }
 
         .toast {
@@ -218,34 +277,75 @@
             }
         }
 
-        .section {
-            margin-bottom: 32px;
+        .target-section {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #667eea;
+        .target-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .target-input-group input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .target-input-group label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            min-width: 100px;
+        }
+
+        .target-input-group .unit {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            min-width: 40px;
+        }
+
+        .target-save-btn {
+            padding: 8px 16px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .target-save-btn:hover {
+            background: #555;
         }
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 16px;
+            margin-bottom: 24px;
         }
 
         .card {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .card h3 {
-            font-size: 13px;
+            font-size: 12px;
             color: #999;
             font-weight: 600;
             margin-bottom: 12px;
@@ -254,15 +354,20 @@
         }
 
         .card-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+        }
+
+        .card-value.highlight {
+            color: #6b7c3e;
         }
 
         .card-unit {
             font-size: 12px;
             color: #999;
+            margin-bottom: 12px;
         }
 
         .card-comparison {
@@ -291,7 +396,7 @@
 
         .progress-fill {
             height: 100%;
-            background: #27ae60;
+            background: #6b7c3e;
             transition: width 0.3s ease;
         }
 
@@ -299,18 +404,11 @@
             background: #f39c12;
         }
 
-        .target-input-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .target-input-group input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 12px;
+        .rank-badge {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 4px;
+            font-weight: 600;
         }
 
         .rank-item {
@@ -331,12 +429,13 @@
             font-size: 13px;
             color: #333;
             flex: 1;
+            font-weight: 500;
         }
 
         .rank-value {
             font-size: 13px;
             font-weight: 600;
-            color: #667eea;
+            color: #6b7c3e;
             margin-left: 12px;
             white-space: nowrap;
         }
@@ -345,6 +444,38 @@
             position: relative;
             height: 300px;
             margin-top: 12px;
+        }
+
+        .chart-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chart-tab {
+            padding: 10px 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 13px;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+        }
+
+        .chart-tab.active {
+            color: #6b7c3e;
+            border-bottom-color: #6b7c3e;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .product-selector {
@@ -366,7 +497,7 @@
         }
 
         .product-selector label:hover {
-            background: #f0f0ff;
+            background: #f0f0f0;
         }
 
         .product-selector input[type="checkbox"] {
@@ -401,6 +532,9 @@
             color: #555;
             margin-bottom: 12px;
             white-space: pre-wrap;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
         }
 
         table {
@@ -516,12 +650,12 @@
         }
 
         .modal-buttons .btn-primary {
-            background: #667eea;
+            background: #6b7c3e;
             color: white;
         }
 
         .modal-buttons .btn-primary:hover {
-            background: #5568d3;
+            background: #5a6a34;
         }
 
         .modal-buttons .btn-secondary {
@@ -535,12 +669,12 @@
 
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 24px;
+                font-size: 22px;
             }
 
-            .header .btn {
+            .header .btn-refresh {
                 position: static;
-                width: 100%;
+                width: auto;
                 margin-top: 12px;
             }
 
@@ -557,11 +691,17 @@
 <body>
     <div class="header">
         <h1>올리브영 매출 대시보드</h1>
-        <p id="headerSubtitle">데이터를 불러오는 중...</p>
-        <button class="btn" onclick="showAIPromptModal()">AI 분석 프롬프트 생성</button>
+        <p id="headerSubtitle">더랩바이블랑두 | 데이터 업데이트 시 자동 분석</p>
+        <button class="btn-refresh" onclick="location.reload()">🔄 새로고침</button>
     </div>
 
     <div class="container">
+        <!-- Status Indicator -->
+        <div class="status-indicator" id="statusIndicator">🟡 내장 데이터 사용 중</div>
+
+        <!-- Upload Button -->
+        <button class="upload-zone-button" onclick="document.querySelector('.upload-zone').classList.toggle('show')">📁 파일 업로드</button>
+
         <!-- Upload Zone -->
         <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
             <p>📁 Excel 파일을 여기에 드래그하거나 클릭하여 업로드</p>
@@ -570,13 +710,10 @@
             <input type="file" id="fileInput" accept=".xlsx,.xlsm" onchange="handleFileUpload(event)">
         </div>
 
-        <!-- Status Indicator -->
-        <div class="status-indicator" id="statusIndicator">🟡 내장 데이터 사용 중</div>
-
         <!-- Controls -->
         <div class="controls">
             <div class="controls-row">
-                <div style="grid-column: span 2;">
+                <div>
                     <label style="font-size: 12px; color: #666; margin-bottom: 6px; display: block;">기간 선택</label>
                     <div class="btn-group">
                         <button class="btn" onclick="setDateRange('all')">전체</button>
@@ -590,7 +727,7 @@
             </div>
 
             <div class="controls-row">
-                <div style="grid-column: span 2;">
+                <div>
                     <label style="font-size: 12px; color: #666; margin-bottom: 6px; display: block;">커스텀 범위</label>
                     <div style="display: flex; gap: 8px;">
                         <input type="date" id="dateFrom" onchange="updateCustomDateRange()">
@@ -618,37 +755,47 @@
             </div>
         </div>
 
-        <div class="card">
-                <div class="target-input-group">
-                    <input type="number" id="targetInput" placeholder="일 평균 목표 매출 (만원)" step="10" min="0">
-                    <button class="btn" style="background: #667eea; color: white; border-color: #667eea;" onclick="saveTarget()">저장</button>
-                </div>
-
-                <div class="cards-grid">
-                    <div class="card" style="margin: 0;">
-                        <h3>오늘 달성률</h3>
-                        <div class="card-value" id="todayRate">-</div>
-                        <div class="card-unit" id="todayAmount">-</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="todayProgress" style="width: 0%;"></div>
-                        </div>
+        <!-- Target Section -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 목표 관리</span>
+            </div>
+            <div class="section-content">
+                <div class="target-section">
+                    <div class="target-input-group">
+                        <label>일 평균 목표 매출</label>
+                        <input type="number" id="targetInput" placeholder="목표 금액" step="10" min="0">
+                        <span class="unit">원</span>
+                        <button class="target-save-btn" onclick="saveTarget()">저장</button>
                     </div>
 
-                    <div class="card" style="margin: 0;">
-                        <h3>최근 7일 일평균 달성률</h3>
-                        <div class="card-value" id="week7Rate">-</div>
-                        <div class="card-unit" id="week7Amount">-</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="week7Progress" style="width: 0%;"></div>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3>오늘 달성률</h3>
+                            <div class="card-value highlight" id="todayRate">-</div>
+                            <div class="card-unit" id="todayAmount">-</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="todayProgress" style="width: 0%;"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="card" style="margin: 0;">
-                        <h3>이번달 일평균 달성률</h3>
-                        <div class="card-value" id="monthRate">-</div>
-                        <div class="card-unit" id="monthAmount">-</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="monthProgress" style="width: 0%;"></div>
+                        <div class="card">
+                            <h3>최근 7일 일평균 달성률</h3>
+                            <div class="card-value highlight" id="week7Rate">-</div>
+                            <div class="card-unit" id="week7Amount">-</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="week7Progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>이번달 일평균 달성률</h3>
+                            <div class="card-value highlight" id="monthRate">-</div>
+                            <div class="card-unit" id="monthAmount">-</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="monthProgress" style="width: 0%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -656,111 +803,143 @@
         </div>
 
         <!-- Sales Status -->
-        <div class="section">
-            <div class="section-title">매출 현황</div>
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>최근 30일 매출</h3>
-                    <div class="card-value" id="sales30d">-</div>
-                    <div class="card-comparison" id="sales30dComp">-</div>
-                </div>
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 매출 현황</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>최근 30일 매출</h3>
+                        <div class="card-value" id="sales30d">-</div>
+                        <div class="card-comparison" id="sales30dComp">-</div>
+                    </div>
 
-                <div class="card">
-                    <h3>최근 7일 매출</h3>
-                    <div class="card-value" id="sales7d">-</div>
-                    <div class="card-comparison" id="sales7dComp">-</div>
-                </div>
+                    <div class="card">
+                        <h3>최근 7일 매출</h3>
+                        <div class="card-value" id="sales7d">-</div>
+                        <div class="card-comparison" id="sales7dComp">-</div>
+                    </div>
 
-                <div class="card">
-                    <h3>당일 매출</h3>
-                    <div class="card-value" id="salesToday">-</div>
-                    <div class="card-comparison" id="salesTodayComp">-</div>
+                    <div class="card">
+                        <h3>당일 매출</h3>
+                        <div class="card-value" id="salesToday">-</div>
+                        <div class="card-comparison" id="salesTodayComp">-</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Top 3 Products 30 Days -->
-        <div class="section">
-            <div class="section-title">최근 30일 매출 Top 3</div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div id="top3-30days"></div>
-                </div>
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 최근 30일 매출 Top 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="top3-30days-grid"></div>
             </div>
         </div>
 
         <!-- Growth Rate Top 3 -->
-        <div class="section">
-            <div class="section-title">7일 성장률 Top 3</div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div id="growthRate-top3"></div>
-                </div>
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 7일 성장률 Top 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="growthRate-top3-grid"></div>
             </div>
         </div>
 
         <!-- Absolute Growth Top 3 -->
-        <div class="section">
-            <div class="section-title">7일 매출액 성장 Top 3</div>
-            <div class="cards-grid">
-                <div class="card">
-                    <div id="absoluteGrowth-top3"></div>
-                </div>
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 7일 매출액 성장 Top 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="absoluteGrowth-top3-grid"></div>
             </div>
         </div>
 
         <!-- Decline Bottom 3 -->
-        <div class="section">
-            <div class="section-title">7일 매출 하락 Worst 3</div>
-            <div class="cards-grid">
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 7일 매출 하락 Worst 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="decline-bottom3-grid"></div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 분석 차트</span>
+            </div>
+            <div class="section-content">
                 <div class="card">
-                    <div id="decline-bottom3"></div>
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" onclick="switchTab('dailyTrend')">📈 일별 추이</button>
+                        <button class="chart-tab" onclick="switchTab('productTop5')">🏷 제품별 Top5</button>
+                        <button class="chart-tab" onclick="switchTab('weekday')">📊 요일별 분석</button>
+                        <button class="chart-tab" onclick="switchTab('fullData')">📋 전체 데이터</button>
+                    </div>
+
+                    <div id="dailyTrend" class="tab-content active">
+                        <label style="font-size: 12px; color: #666; margin-bottom: 12px; display: block;">상품 선택</label>
+                        <div class="product-selector" id="productSelector"></div>
+                        <div class="metric-toggle">
+                            <label>
+                                <input type="radio" name="metric" value="sales" checked onchange="refreshTrendChart()">
+                                매출
+                            </label>
+                            <label>
+                                <input type="radio" name="metric" value="quantity" onchange="refreshTrendChart()">
+                                수량
+                            </label>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="productTop5" class="tab-content">
+                        <div class="chart-container">
+                            <canvas id="top5Chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="weekday" class="tab-content">
+                        <div class="chart-container">
+                            <canvas id="weekdayChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="fullData" class="tab-content">
+                        <div id="fullDataContent"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Weekday Analysis -->
-        <div class="section">
-            <div class="section-title">요일별 분석</div>
-            <div class="card">
-                <div class="chart-container">
-                    <canvas id="weekdayChart"></canvas>
-                </div>
+        <!-- Auto Analysis Report -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 자동 매출 분석 리포트</span>
             </div>
-        </div>
+            <div class="section-content">
+                <div class="card">
+                    <div class="analysis-text" id="analysisText"></div>
 
-        <!-- Product Daily Trend -->
-        <div class="section">
-            <div class="section-title">제품별 일간 판매 추이</div>
-            <div class="card">
-                <label style="font-size: 12px; color: #666; margin-bottom: 12px; display: block;">상품 선택</label>
-                <div class="product-selector" id="productSelector"></div>
-
-                <div class="metric-toggle">
-                    <label>
-                        <input type="radio" name="metric" value="sales" checked onchange="refreshTrendChart()">
-                        매출
-                    </label>
-                    <label>
-                        <input type="radio" name="metric" value="quantity" onchange="refreshTrendChart()">
-                        수량
-                    </label>
+                    <h3 style="font-size: 13px; color: #666; margin-top: 20px; margin-bottom: 12px; text-transform: uppercase; font-weight: 600;">상위 15개 상품</h3>
+                    <div id="topProductsTable"></div>
                 </div>
-
-                <div class="chart-container">
-                    <canvas id="trendChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sales Analysis -->
-        <div class="section">
-            <div class="section-title">매출 분석</div>
-            <div class="card">
-                <div class="analysis-text" id="analysisText"></div>
-
-                <h3 style="font-size: 13px; color: #666; margin-top: 20px; margin-bottom: 12px; text-transform: uppercase; font-weight: 600;">상위 15개 상품</h3>
-                <div id="topProductsTable"></div>
             </div>
         </div>
     </div>
@@ -780,6 +959,20 @@
             </div>
         </div>
     </div>
+
+    <!-- Add AI button in header area (alternative placement) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('.header');
+            const aiBtn = document.createElement('button');
+            aiBtn.className = 'btn-refresh';
+            aiBtn.style.right = 'auto';
+            aiBtn.style.left = '20px';
+            aiBtn.textContent = '🤖 AI 분석 프롬프트';
+            aiBtn.onclick = () => showAIPromptModal();
+            header.appendChild(aiBtn);
+        });
+    </script>
 
     <script>
         // Configuration
@@ -809,6 +1002,16 @@
 
         function fmtManwon(n) {
             if (n === null || n === undefined) return '0만원';
+            const manwon = Math.round(n / 10000);
+            return fmtNum(manwon) + '만원';
+        }
+
+        function fmtEok(n) {
+            if (n === null || n === undefined) return '0만원';
+            if (Math.abs(n) >= 100000000) {
+                const eok = (n / 100000000).toFixed(1);
+                return eok + '억원';
+            }
             const manwon = Math.round(n / 10000);
             return fmtNum(manwon) + '만원';
         }
@@ -1166,8 +1369,6 @@
             updateGrowthRates();
             updateAbsoluteGrowth();
             updateDecline();
-            updateWeekdayChart();
-            updateTrendChart();
             updateAnalysis();
         }
 
@@ -1212,7 +1413,7 @@
             const todayRate = Math.round((todaySales / state.targetDaily) * 100);
 
             document.getElementById('todayRate').textContent = todayRate + '%';
-            document.getElementById('todayAmount').textContent = fmtManwon(todaySales);
+            document.getElementById('todayAmount').textContent = fmtEok(todaySales);
             updateProgressBar('todayProgress', todayRate);
 
             // 7-day average
@@ -1226,7 +1427,7 @@
             const week7Rate = Math.round((avg7d / state.targetDaily) * 100);
 
             document.getElementById('week7Rate').textContent = week7Rate + '%';
-            document.getElementById('week7Amount').textContent = fmtManwon(avg7d);
+            document.getElementById('week7Amount').textContent = fmtEok(avg7d);
             updateProgressBar('week7Progress', week7Rate);
 
             // Month average
@@ -1241,7 +1442,7 @@
             const monthRate = Math.round((avgMonth / state.targetDaily) * 100);
 
             document.getElementById('monthRate').textContent = monthRate + '%';
-            document.getElementById('monthAmount').textContent = fmtManwon(avgMonth);
+            document.getElementById('monthAmount').textContent = fmtEok(avgMonth);
             updateProgressBar('monthProgress', monthRate);
         }
 
@@ -1273,12 +1474,12 @@
             });
             const prev30Sales = prev30.reduce((s, r) => s + (r['매출'] || 0), 0);
 
-            document.getElementById('sales30d').textContent = fmtManwon(sales30);
+            document.getElementById('sales30d').textContent = fmtEok(sales30);
             if (prev30Sales > 0) {
                 const pct = Math.round(((sales30 - prev30Sales) / prev30Sales) * 100);
                 const cls = pct >= 0 ? 'positive' : 'negative';
-                const sgn = pct >= 0 ? '+' : '';
-                document.getElementById('sales30dComp').innerHTML = `<span class="${cls}">이전 30일 대비 ${sgn}${pct}%</span>`;
+                const sgn = pct >= 0 ? '▲ +' : '▼ ';
+                document.getElementById('sales30dComp').innerHTML = `<span class="${cls}">${sgn}${Math.abs(pct)}% vs 이전 30일</span>`;
             } else {
                 document.getElementById('sales30dComp').textContent = '이전 기간 데이터 부족';
             }
@@ -1298,14 +1499,14 @@
             });
             const prev7Sales = prev7.reduce((s, r) => s + (r['매출'] || 0), 0);
 
-            document.getElementById('sales7d').textContent = fmtManwon(sales7);
+            document.getElementById('sales7d').textContent = fmtEok(sales7);
             if (prev7Sales > 0) {
                 const pct = Math.round(((sales7 - prev7Sales) / prev7Sales) * 100);
                 const cls = pct >= 0 ? 'positive' : 'negative';
-                const sgn = pct >= 0 ? '+' : '';
-                document.getElementById('sales7dComp').innerHTML = `<span class="${cls}">이전 7일 대비 ${sgn}${pct}%</span>`;
+                const sgn = pct >= 0 ? '▲ +' : '▼ ';
+                document.getElementById('sales7dComp').innerHTML = `<span class="${cls}">${sgn}${Math.abs(pct)}% vs 전주</span>`;
             } else {
-                document.getElementById('sales7dComp').textContent = '이저 기가 데이터 부족';
+                document.getElementById('sales7dComp').textContent = '이전 기간 데이터 부족';
             }
 
             // Today
@@ -1317,12 +1518,12 @@
             const yestData = RAW_DATA.filter(r => new Date(r['일자_str']).toDateString() === yesterday.toDateString());
             const yestSales = yestData.reduce((s, r) => s + (r['매출'] || 0), 0);
 
-            document.getElementById('salesToday').textContent = fmtManwon(salesToday);
+            document.getElementById('salesToday').textContent = fmtEok(salesToday);
             if (yestSales > 0) {
                 const pct = Math.round(((salesToday - yestSales) / yestSales) * 100);
                 const cls = pct >= 0 ? 'positive' : 'negative';
-                const sgn = pct >= 0 ? '+' : '';
-                document.getElementById('salesTodayComp').innerHTML = `<span class="${cls}">어제 대비 ${sgn}${pct}%</span>`;
+                const sgn = pct >= 0 ? '▲ +' : '▼ ';
+                document.getElementById('salesTodayComp').innerHTML = `<span class="${cls}">${sgn}${Math.abs(pct)}% vs 전일</span>`;
             } else {
                 document.getElementById('salesTodayComp').textContent = '어제 데이터 부족';
             }
@@ -1349,13 +1550,17 @@
 
             let html = '';
             if (sorted.length === 0) {
-                html = '<div class="empty-message">데이터 없음</div>';
+                html = '<div class="card"><div class="empty-message">데이터 없음</div></div>';
             } else {
-                sorted.forEach(([ name, sales ]) => {
-                    html += `<div class="rank-item"><span class="rank-name">${name}</span><span class="rank-value">${fmtManwon(sales)}</span></div>`;
+                sorted.forEach(([ name, sales ], idx) => {
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${name}</div>
+                        <div class="card-value" style="font-size: 20px; color: #6b7c3e;">${fmtEok(sales)}</div>
+                    </div>`;
                 });
             }
-            document.getElementById('top3-30days').innerHTML = html;
+            document.getElementById('top3-30days-grid').innerHTML = html;
         }
 
         function updateGrowthRates() {
@@ -1422,14 +1627,19 @@
 
             let html = '';
             if (top3.length === 0) {
-                html = '<div class="empty-message">7일 성장한 상품 없음</div>';
+                html = '<div class="card"><div class="empty-message">7일 성장한 상품 없음</div></div>';
             } else {
-                top3.forEach(item => {
-                    const sgn = item.pct >= 0 ? '+' : '';
-                    html += `<div class="rank-item"><span class="rank-name">${item.name}</span><span class="rank-value">${sgn}${item.pct}% (${fmtManwon(item.change)})</span></div>`;
+                top3.forEach((item, idx) => {
+                    const sgn = item.pct >= 0 ? '▲ +' : '▼ ';
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${item.name}</div>
+                        <div class="card-value" style="font-size: 20px; color: ${item.pct >= 0 ? '#27ae60' : '#e74c3c'};">${sgn}${Math.abs(item.pct)}%</div>
+                        <div class="card-unit">${fmtEok(item.change)}</div>
+                    </div>`;
                 });
             }
-            document.getElementById('growthRate-top3').innerHTML = html;
+            document.getElementById('growthRate-top3-grid').innerHTML = html;
         }
 
         function updateAbsoluteGrowth() {
@@ -1477,13 +1687,18 @@
 
             let html = '';
             if (top3.length === 0) {
-                html = '<div class="empty-message">7일 성장한 상품 없음</div>';
+                html = '<div class="card"><div class="empty-message">7일 성장한 상품 없음</div></div>';
             } else {
-                top3.forEach(item => {
-                    html += `<div class="rank-item"><span class="rank-name">${item.name}</span><span class="rank-value">+${fmtManwon(item.change)} (${fmtManwon(item.prev)} → ${fmtManwon(item.sales7)})</span></div>`;
+                top3.forEach((item, idx) => {
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${item.name}</div>
+                        <div class="card-value" style="font-size: 20px; color: #27ae60;">▲ ${fmtEok(item.change)}</div>
+                        <div class="card-unit">${fmtEok(item.prev)} → ${fmtEok(item.sales7)}</div>
+                    </div>`;
                 });
             }
-            document.getElementById('absoluteGrowth-top3').innerHTML = html;
+            document.getElementById('absoluteGrowth-top3-grid').innerHTML = html;
         }
 
         function updateDecline() {
@@ -1531,114 +1746,18 @@
 
             let html = '';
             if (worst3.length === 0) {
-                html = '<div class="empty-message">하락 상품 없음</div>';
+                html = '<div class="card"><div class="empty-message">하락 상품 없음</div></div>';
             } else {
-                worst3.forEach(item => {
-                    html += `<div class="rank-item"><span class="rank-name">${item.name}</span><span class="rank-value">${fmtManwon(item.change)} (${fmtManwon(item.prev)} → ${fmtManwon(item.sales7)})</span></div>`;
+                worst3.forEach((item, idx) => {
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${item.name}</div>
+                        <div class="card-value" style="font-size: 20px; color: #e74c3c;">▼ ${fmtEok(Math.abs(item.change))}</div>
+                        <div class="card-unit">${fmtEok(item.prev)} → ${fmtEok(item.sales7)}</div>
+                    </div>`;
                 });
             }
-            document.getElementById('decline-bottom3').innerHTML = html;
-        }
-
-        function updateWeekdayChart() {
-            const { from: f7, to: t7 } = getDateRange('7days');
-
-            const byDay = [0, 0, 0, 0, 0, 0, 0];
-            const dayCount = [0, 0, 0, 0, 0, 0, 0];
-
-            state.filteredData.forEach(r => {
-                const d = new Date(r['일자_str']);
-                if (d >= f7 && d <= t7) {
-                    const day = d.getDay();
-                    byDay[day] += r['매출'] || 0;
-                    dayCount[day] += 1;
-                }
-            });
-
-            const avgByDay = byDay.map((s, i) => dayCount[i] > 0 ? s / dayCount[i] : 0);
-
-            destroyChart('weekdayChart');
-            const ctx = document.getElementById('weekdayChart').getContext('2d');
-            state.charts.weekdayChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['일', '월', '화', '수', '목', '금', '토'],
-                    datasets: [{
-                        label: '평균 매출 (만원)',
-                        data: avgByDay.map(v => Math.round(v / 10000)),
-                        backgroundColor: '#667eea',
-                        borderRadius: 6,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        }
-
-        function updateTrendChart() {
-            refreshTrendChart();
-        }
-
-        function refreshTrendChart() {
-            const selectedProducts = Array.from(document.querySelectorAll('#productSelector input[type="checkbox"]:checked')).map(cb => cb.value);
-            const metric = document.querySelector('input[name="metric"]:checked')?.value || 'sales';
-
-            if (selectedProducts.length === 0) return;
-
-            const { from: f30, to: t30 } = getDateRange('30days');
-            const allDates = new Set();
-
-            state.filteredData.forEach(r => {
-                const d = new Date(r['일자_str']);
-                if (d >= f30 && d <= t30) allDates.add(r['일자_str']);
-            });
-
-            const sortedDates = Array.from(allDates).sort();
-
-            const datasets = selectedProducts.map((product, idx) => {
-                const colors = ['#667eea', '#764ba2', '#27ae60', '#f39c12', '#e74c3c'];
-                const color = colors[idx % colors.length];
-
-                const data = sortedDates.map(date => {
-                    const records = state.filteredData.filter(r => r['일자_str'] === date && cleanName(r['상품명']) === product);
-                    const total = records.reduce((s, r) => s + (metric === 'sales' ? r['매출'] || 0 : r['수량'] || 0), 0);
-                    return metric === 'sales' ? Math.round(total / 10000) : total;
-                });
-
-                return {
-                    label: product,
-                    data: data,
-                    borderColor: color,
-                    backgroundColor: color + '20',
-                    borderWidth: 2,
-                    tension: 0.3,
-                    fill: false
-                };
-            });
-
-            destroyChart('trendChart');
-            const ctx = document.getElementById('trendChart').getContext('2d');
-            state.charts.trendChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: sortedDates,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: true } },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
+            document.getElementById('decline-bottom3-grid').innerHTML = html;
         }
 
         function updateAnalysis() {
@@ -1704,7 +1823,7 @@
 
             let analysisText = 'ANALYSIS SUMMARY\n\n';
             analysisText += `매출 1위 상품: ${topName}\n`;
-            analysisText += `상승 �m 1위: ${topGrowthName} (+${topGrowthPct}%)\n`;
+            analysisText += `상승률 1위: ${topGrowthName} (+${topGrowthPct}%)\n`;
             analysisText += `채널 분석: 온라인 ${onlinePct}% / 오프라인 ${offlinePct}%`;
 
             document.getElementById('analysisText').textContent = analysisText;
@@ -1716,11 +1835,161 @@
 
             let tableHtml = '<table><thead><tr><th>순위</th><th>상품명</th><th>매출</th></tr></thead><tbody>';
             top15.forEach(([ name, sales ], idx) => {
-                tableHtml += `<tr><td>${idx + 1}</td><td>${name}</td><td>${fmtManwon(sales)}</td></tr>`;
+                tableHtml += `<tr><td>${idx + 1}</td><td>${name}</td><td>${fmtEok(sales)}</td></tr>`;
             });
             tableHtml += '</tbody></table>';
 
             document.getElementById('topProductsTable').innerHTML = tableHtml;
+
+            // Update tab content
+            updateChartsTab();
+        }
+
+        function updateChartsTab() {
+            // Weekday chart
+            updateWeekdayChart();
+
+            // Trend chart
+            updateTrendChart();
+
+            // Full data table
+            updateFullDataTable();
+        }
+
+        function updateWeekdayChart() {
+            const { from: f7, to: t7 } = getDateRange('7days');
+
+            const byDay = [0, 0, 0, 0, 0, 0, 0];
+            const dayCount = [0, 0, 0, 0, 0, 0, 0];
+
+            state.filteredData.forEach(r => {
+                const d = new Date(r['일자_str']);
+                if (d >= f7 && d <= t7) {
+                    const day = d.getDay();
+                    byDay[day] += r['매출'] || 0;
+                    dayCount[day] += 1;
+                }
+            });
+
+            const avgByDay = byDay.map((s, i) => dayCount[i] > 0 ? s / dayCount[i] : 0);
+
+            destroyChart('weekdayChart');
+            const ctx = document.getElementById('weekdayChart').getContext('2d');
+            state.charts.weekdayChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['일', '월', '화', '수', '목', '금', '토'],
+                    datasets: [{
+                        label: '평균 매출 (만원)',
+                        data: avgByDay.map(v => Math.round(v / 10000)),
+                        backgroundColor: '#6b7c3e',
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function updateTrendChart() {
+            refreshTrendChart();
+        }
+
+        function refreshTrendChart() {
+            const selectedProducts = Array.from(document.querySelectorAll('#productSelector input[type="checkbox"]:checked')).map(cb => cb.value);
+            const metric = document.querySelector('input[name="metric"]:checked')?.value || 'sales';
+
+            if (selectedProducts.length === 0) return;
+
+            const { from: f30, to: t30 } = getDateRange('30days');
+            const allDates = new Set();
+
+            state.filteredData.forEach(r => {
+                const d = new Date(r['일자_str']);
+                if (d >= f30 && d <= t30) allDates.add(r['일자_str']);
+            });
+
+            const sortedDates = Array.from(allDates).sort();
+
+            const datasets = selectedProducts.map((product, idx) => {
+                const colors = ['#6b7c3e', '#8ab446', '#a8c856', '#d4c4a8', '#b88d6b'];
+                const color = colors[idx % colors.length];
+
+                const data = sortedDates.map(date => {
+                    const records = state.filteredData.filter(r => r['일자_str'] === date && cleanName(r['상품명']) === product);
+                    const total = records.reduce((s, r) => s + (metric === 'sales' ? r['매출'] || 0 : r['수량'] || 0), 0);
+                    return metric === 'sales' ? Math.round(total / 10000) : total;
+                });
+
+                return {
+                    label: product,
+                    data: data,
+                    borderColor: color,
+                    backgroundColor: color + '20',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false
+                };
+            });
+
+            destroyChart('trendChart');
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            state.charts.trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedDates,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function updateFullDataTable() {
+            const byProduct = {};
+            state.filteredData.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byProduct[name]) byProduct[name] = { count: 0, sales: 0 };
+                byProduct[name].sales += r['매출'] || 0;
+                byProduct[name].count += r['수량'] || 0;
+            });
+
+            const sorted = Object.entries(byProduct)
+                .map(([name, data]) => ({ name, ...data }))
+                .sort((a, b) => b.sales - a.sales);
+
+            let html = '<table><thead><tr><th>순위</th><th>상품명</th><th>수량</th><th>매출</th></tr></thead><tbody>';
+            sorted.forEach((item, idx) => {
+                html += `<tr><td>${idx + 1}</td><td>${item.name}</td><td>${fmtNum(item.count)}</td><td>${fmtEok(item.sales)}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('fullDataContent').innerHTML = html;
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.chart-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
         }
 
         function destroyChart(canvasId) {
@@ -1743,10 +2012,2028 @@
             const top10 = Object.entries(byProduct)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 10)
-                .map(([ name, sales ]) => `- ${name}: ${fmtManwon(sales)}`)
+                .map(([ name, sales ]) => `- ${name}: ${fmtEok(sales)}`)
                 .join('\n');
 
-            const prompt = `다음은 올리브영 매출 대시보드 데이터입니다. 자세한 분석을 제공해주세요:\n\n기간: ${f7.toLocaleDateString('ko-KR')} ~ ${t7.toLocaleDateString('ko-KR')}\n${state.filteredData.length}건 데이터\n\n상위 10개 상품:\n${top10}\n\n분석 관점:\n1. 상품�괐 매출 현황 및 트렌드\n2. 온라인/오프라인 채널 성과\n3. 주요 성과 요인과 개선 기회\n4. 행후 전랹䠜안`;
+            const prompt = `다음은 올리브영 매출 대시보드 데이터입니다. 자세한 분석을 제공해주세요:\n\n기간: ${f7.toLocaleDateString('ko-KR')} ~ ${t7.toLocaleDateString('ko-KR')}\n${state.filteredData.length}건 데이터\n\n상위 10개 상품:\n${top10}\n\n분석 관점:\n1. 상품별 매출 현황 및 트렌드\n2. 온라인/오프라인 채널 성과\n3. 주요 성과 요인과 개선 기회\n4. 향후 전략 제안`;
+
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>올리브영 매출 대시보드</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            color-scheme: light;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            color: #333;
+            padding: 32px 20px;
+            position: relative;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 0;
+        }
+
+        .header .btn-refresh {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .header .btn-refresh:hover {
+            border-color: #6b7c3e;
+            color: #6b7c3e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .upload-zone-button {
+            display: inline-block;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .upload-zone {
+            display: none;
+            background: white;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-zone.show {
+            display: block;
+        }
+
+        .upload-zone:hover {
+            background: #fafafa;
+            border-color: #999;
+        }
+
+        .upload-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-zone p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .file-info {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .file-info.success {
+            color: #27ae60;
+        }
+
+        .status-indicator {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .collapsible-section {
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 16px;
+        }
+
+        .section-header .toggle {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .section-header .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section-header.collapsed .toggle::before {
+            content: '▶';
+        }
+
+        .section-header:not(.collapsed) .toggle::before {
+            content: '▼';
+        }
+
+        .section-content {
+            display: block;
+        }
+
+        .section-header.collapsed ~ .section-content {
+            display: none;
+        }
+
+        .controls {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .controls-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .controls-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn.active {
+            background: #6b7c3e;
+            color: white;
+            border-color: #6b7c3e;
+        }
+
+        .btn:hover:not(.active) {
+            border-color: #6b7c3e;
+            color: #6b7c3e;
+        }
+
+        select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            color: #333;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .range-labels {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            background: #27ae60;
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .target-section {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .target-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .target-input-group input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .target-input-group label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            min-width: 100px;
+        }
+
+        .target-input-group .unit {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            min-width: 40px;
+        }
+
+        .target-save-btn {
+            padding: 8px 16px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .target-save-btn:hover {
+            background: #555;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            font-size: 12px;
+            color: #999;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .card-value.highlight {
+            color: #6b7c3e;
+        }
+
+        .card-unit {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        .card-comparison {
+            font-size: 12px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .card-comparison.positive {
+            color: #27ae60;
+        }
+
+        .card-comparison.negative {
+            color: #e74c3c;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #6b7c3e;
+            transition: width 0.3s ease;
+        }
+
+        .progress-fill.orange {
+            background: #f39c12;
+        }
+
+        .rank-badge {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .rank-item {
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rank-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .rank-name {
+            font-size: 13px;
+            color: #333;
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .rank-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7c3e;
+            margin-left: 12px;
+            white-space: nowrap;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 12px;
+        }
+
+        .chart-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chart-tab {
+            padding: 10px 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 13px;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+        }
+
+        .chart-tab.active {
+            color: #6b7c3e;
+            border-bottom-color: #6b7c3e;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .product-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .product-selector label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            padding: 6px 8px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .product-selector label:hover {
+            background: #f0f0f0;
+        }
+
+        .product-selector input[type="checkbox"] {
+            margin-right: 6px;
+            cursor: pointer;
+        }
+
+        .metric-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .metric-toggle label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            padding: 6px 8px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .metric-toggle input[type="radio"] {
+            margin-right: 6px;
+            cursor: pointer;
+        }
+
+        .analysis-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        table th {
+            background: #f9f9f9;
+            padding: 8px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table td {
+            padding: 8px;
+            font-size: 12px;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        table tr:hover {
+            background: #fafafa;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .ai-prompt-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-prompt-modal.show {
+            display: flex;
+        }
+
+        .ai-prompt-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .ai-prompt-content h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .ai-prompt-text {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #555;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .ai-recomm {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: #fffbf0;
+            border-left: 3px solid #f39c12;
+            border-radius: 4px;
+        }
+
+        .ai-recomm strong {
+            color: #d68910;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .modal-buttons .btn-primary {
+            background: #6b7c3e;
+            color: white;
+        }
+
+        .modal-buttons .btn-primary:hover {
+            background: #5a6a34;
+        }
+
+        .modal-buttons .btn-secondary {
+            background: #eee;
+            color: #333;
+        }
+
+        .modal-buttons .btn-secondary:hover {
+            background: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .header .btn-refresh {
+                position: static;
+                width: auto;
+                margin-top: 12px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>올리브영 매출 대시보드</h1>
+        <p id="headerSubtitle">더랩바이블랑두 | 데이터 업데이트 시 자동 분석</p>
+        <button class="btn-refresh" onclick="location.reload()">🔄 새로고침</button>
+    </div>
+
+    <div class="container">
+        <!-- Status Indicator -->
+        <div class="status-indicator" id="statusIndicator">🟡 내장 데이터 사용 중</div>
+
+        <!-- Upload Button -->
+        <button class="upload-zone-button" onclick="document.querySelector('.upload-zone').classList.toggle('show')">📁 파일 업로드</button>
+
+        <!-- Upload Zone -->
+        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+            <p>📁 Excel 파일을 여기에 드래그하거나 클릭하여 업로드</p>
+            <p style="font-size: 12px; color: #999;">지원 형식: .xlsx, .xlsm</p>
+            <div class="file-info" id="fileInfo"></div>
+            <input type="file" id="fileInput" accept=".xlsx,.xlsm" onchange="handleFileUpload(event)">
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="controls-row">
+                <div>
+                    <label style="font-size: 12px; color: #666; margin-bottom: 6px; display: block;">기간 선택</label>
+                    <div class="btn-group">
+                        <button class="btn" onclick="setDateRange('all')">전체</button>
+                        <button class="btn" onclick="setDateRange('thisMonth')">이번 달</button>
+                        <button class="btn" onclick="setDateRange('30days')">최근 30일</button>
+                        <button class="btn active" onclick="setDateRange('7days')">최근 7일</button>
+                        <button class="btn" onclick="setDateRange('3days')">최근 3일</button>
+                        <button class="btn" onclick="setDateRange('yesterday')">어제</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <div>
+                    <label style="font-size: 12px; color: #666; margin-bottom: 6px; display: block;">커스텀 범위</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="date" id="dateFrom" onchange="updateCustomDateRange()">
+                        <input type="date" id="dateTo" onchange="updateCustomDateRange()">
+                    </div>
+                    <div class="range-labels" id="rangeLabels"></div>
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <div>
+                    <label style="font-size: 12px; color: #666; margin-bottom: 6px; display: block;">채널</label>
+                    <select id="channelFilter" onchange="refreshDashboard()">
+                        <option value="">전체</option>
+                        <option value="온라인">온라인</option>
+                        <option value="오프라인">오프라인</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: #666; margin-bottom: 6px; display: block;">상품</label>
+                    <select id="productFilter" onchange="refreshDashboard()" style="display:none;">
+                        <option value="">전체</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Target Section -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 목표 관리</span>
+            </div>
+            <div class="section-content">
+                <div class="target-section">
+                    <div class="target-input-group">
+                        <label>일 평균 목표 매출</label>
+                        <input type="number" id="targetInput" placeholder="목표 금액" step="10" min="0">
+                        <span class="unit">원</span>
+                        <button class="target-save-btn" onclick="saveTarget()">저장</button>
+                    </div>
+
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3>오늘 달성률</h3>
+                            <div class="card-value highlight" id="todayRate">-</div>
+                            <div class="card-unit" id="todayAmount">-</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="todayProgress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>최근 7일 일평균 달성률</h3>
+                            <div class="card-value highlight" id="week7Rate">-</div>
+                            <div class="card-unit" id="week7Amount">-</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="week7Progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>이번달 일평균 달성률</h3>
+                            <div class="card-value highlight" id="monthRate">-</div>
+                            <div class="card-unit" id="monthAmount">-</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="monthProgress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Status -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 매출 현황</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>최근 30일 매출</h3>
+                        <div class="card-value" id="sales30d">-</div>
+                        <div class="card-comparison" id="sales30dComp">-</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>최근 7일 매출</h3>
+                        <div class="card-value" id="sales7d">-</div>
+                        <div class="card-comparison" id="sales7dComp">-</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>당일 매출</h3>
+                        <div class="card-value" id="salesToday">-</div>
+                        <div class="card-comparison" id="salesTodayComp">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top 3 Products 30 Days -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 최근 30일 매출 Top 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="top3-30days-grid"></div>
+            </div>
+        </div>
+
+        <!-- Growth Rate Top 3 -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 7일 성장률 Top 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="growthRate-top3-grid"></div>
+            </div>
+        </div>
+
+        <!-- Absolute Growth Top 3 -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 7일 매출액 성장 Top 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="absoluteGrowth-top3-grid"></div>
+            </div>
+        </div>
+
+        <!-- Decline Bottom 3 -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 7일 매출 하락 Worst 3</span>
+            </div>
+            <div class="section-content">
+                <div class="cards-grid" id="decline-bottom3-grid"></div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 분석 차트</span>
+            </div>
+            <div class="section-content">
+                <div class="card">
+                    <div class="chart-tabs">
+                        <button class="chart-tab active" onclick="switchTab('dailyTrend')">📈 일별 추이</button>
+                        <button class="chart-tab" onclick="switchTab('productTop5')">🏷 제품별 Top5</button>
+                        <button class="chart-tab" onclick="switchTab('weekday')">📊 요일별 분석</button>
+                        <button class="chart-tab" onclick="switchTab('fullData')">📋 전체 데이터</button>
+                    </div>
+
+                    <div id="dailyTrend" class="tab-content active">
+                        <label style="font-size: 12px; color: #666; margin-bottom: 12px; display: block;">상품 선택</label>
+                        <div class="product-selector" id="productSelector"></div>
+                        <div class="metric-toggle">
+                            <label>
+                                <input type="radio" name="metric" value="sales" checked onchange="refreshTrendChart()">
+                                매출
+                            </label>
+                            <label>
+                                <input type="radio" name="metric" value="quantity" onchange="refreshTrendChart()">
+                                수량
+                            </label>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="productTop5" class="tab-content">
+                        <div class="chart-container">
+                            <canvas id="top5Chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="weekday" class="tab-content">
+                        <div class="chart-container">
+                            <canvas id="weekdayChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="fullData" class="tab-content">
+                        <div id="fullDataContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto Analysis Report -->
+        <div class="collapsible-section">
+            <div class="section-header" onclick="this.classList.toggle('collapsed')">
+                <span class="toggle"></span>
+                <span class="title">▼ 자동 매출 분석 리포트</span>
+            </div>
+            <div class="section-content">
+                <div class="card">
+                    <div class="analysis-text" id="analysisText"></div>
+
+                    <h3 style="font-size: 13px; color: #666; margin-top: 20px; margin-bottom: 12px; text-transform: uppercase; font-weight: 600;">상위 15개 상품</h3>
+                    <div id="topProductsTable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Prompt Modal -->
+    <div class="ai-prompt-modal" id="aiPromptModal">
+        <div class="ai-prompt-content">
+            <h2>AI 분석 프롬프트</h2>
+            <div class="ai-recomm">
+                <strong>💎 Gemini가 가장 현실적인 분석을 제공합니다 (1순위 추천)</strong><br>
+                다른 AI 도구로는 Claude, ChatGPT 등을 사용할 수 있습니다.
+            </div>
+            <div class="ai-prompt-text" id="aiPromptText"></div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="closeAIPromptModal()">닫기</button>
+                <button class="btn-primary" onclick="copyAIPrompt()">클립보드에 복사</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add AI button in header area (alternative placement) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('.header');
+            const aiBtn = document.createElement('button');
+            aiBtn.className = 'btn-refresh';
+            aiBtn.style.right = 'auto';
+            aiBtn.style.left = '20px';
+            aiBtn.textContent = '🤖 AI 분석 프롬프트';
+            aiBtn.onclick = () => showAIPromptModal();
+            header.appendChild(aiBtn);
+        });
+    </script>
+
+    <script>
+        // Configuration
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzxZWW8X6Ufnz1_b07a9qFqosKnR9_GkgAI1dSMpUVei-8a3myCB0urKZE08oymDSmN/exec';
+
+        // Inline data
+        let RAW_DATA = [];
+
+        // Application state
+        const state = {
+            data: [],
+            filteredData: [],
+            dateFrom: null,
+            dateTo: null,
+            channelFilter: '',
+            productFilter: '',
+            targetDaily: 0,
+            charts: {},
+            currentDateRange: '7days'
+        };
+
+        // Utility functions
+        function fmtNum(n) {
+            if (n === null || n === undefined) return '0';
+            return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function fmtManwon(n) {
+            if (n === null || n === undefined) return '0만원';
+            const manwon = Math.round(n / 10000);
+            return fmtNum(manwon) + '만원';
+        }
+
+        function fmtEok(n) {
+            if (n === null || n === undefined) return '0만원';
+            if (Math.abs(n) >= 100000000) {
+                const eok = (n / 100000000).toFixed(1);
+                return eok + '억원';
+            }
+            const manwon = Math.round(n / 10000);
+            return fmtNum(manwon) + '만원';
+        }
+
+        function cleanName(name) {
+            return name.replace(/^더랩바이블랑두\s+/, '');
+        }
+
+        // Date utilities
+        function getToday() {
+            return new Date(new Date().toLocaleDateString('en-CA'));
+        }
+
+        function getDateRange(rangeType) {
+            const today = getToday();
+            let from, to;
+
+            switch (rangeType) {
+                case 'all':
+                    from = new Date('2026-01-01');
+                    to = today;
+                    break;
+                case 'thisMonth':
+                    from = new Date(today.getFullYear(), today.getMonth(), 1);
+                    to = today;
+                    break;
+                case '30days':
+                    from = new Date(today);
+                    from.setDate(from.getDate() - 29);
+                    to = today;
+                    break;
+                case '7days':
+                    from = new Date(today);
+                    from.setDate(from.getDate() - 6);
+                    to = today;
+                    break;
+                case '3days':
+                    from = new Date(today);
+                    from.setDate(from.getDate() - 2);
+                    to = today;
+                    break;
+                case 'yesterday':
+                    from = new Date(today);
+                    from.setDate(from.getDate() - 1);
+                    to = from;
+                    break;
+            }
+
+            return { from, to };
+        }
+
+        function setDateRange(rangeType) {
+            state.currentDateRange = rangeType;
+            const { from, to } = getDateRange(rangeType);
+            state.dateFrom = from;
+            state.dateTo = to;
+
+            // Update button states
+            document.querySelectorAll('.controls .btn-group .btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const ab = document.querySelector(`.btn[onclick*="${rangeType}"]`); if (ab) ab.classList.add('active');
+
+            // Update date inputs
+            document.getElementById('dateFrom').value = from.toISOString().split('T')[0];
+            document.getElementById('dateTo').value = to.toISOString().split('T')[0];
+
+            updateRangeLabels();
+            refreshDashboard();
+        }
+
+        function updateCustomDateRange() {
+            const from = document.getElementById('dateFrom').value;
+            const to = document.getElementById('dateTo').value;
+
+            if (from && to) {
+                state.dateFrom = new Date(from);
+                state.dateTo = new Date(to);
+                state.currentDateRange = 'custom';
+
+                // Remove active state from preset buttons
+                document.querySelectorAll('.controls .btn-group .btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                updateRangeLabels();
+                refreshDashboard();
+            }
+        }
+
+        function updateRangeLabels() {
+            const from = state.dateFrom.toLocaleDateString('ko-KR');
+            const to = state.dateTo.toLocaleDateString('ko-KR');
+            document.getElementById('rangeLabels').textContent = `${from} ~ ${to}`;
+        }
+
+        function excelDateToISO(v) {
+            // Check for YYYYMMDD format
+            if (typeof v === 'number' && v >= 19000101 && v <= 99991231) {
+                const s = v.toString();
+                if (s.length === 8) {
+                    const y = s.substring(0, 4);
+                    const m = s.substring(4, 6);
+                    const d = s.substring(6, 8);
+                    return `${y}-${m}-${d}`;
+                }
+            }
+
+            // Excel serial number
+            if (typeof v === 'number' && v > 0) {
+                const d = new Date(1899, 11, 30);
+                d.setDate(d.getDate() + Math.floor(v));
+                return d.toISOString().split('T')[0];
+            }
+
+            // Date object
+            if (v instanceof Date) {
+                return v.toISOString().split('T')[0];
+            }
+
+            // String date
+            if (typeof v === 'string') {
+                if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+                if (/^\d{8}$/.test(v)) {
+                    return `${v.substring(0, 4)}-${v.substring(4, 6)}-${v.substring(6, 8)}`;
+                }
+            }
+
+            return null;
+        }
+
+        // Google Sheets Integration
+        async function loadDataFromAPI() {
+            if (!API_URL) {
+                console.log('API_URL not set, using embedded data');
+                return false;
+            }
+
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) return false;
+
+                const data = await response.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    RAW_DATA = data.map(function(r) {
+                if (r['일자_str'] && String(r['일자_str']).includes('T')) {
+                    var d = new Date(r['일자_str']);
+                    r['일자_str'] = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+                }
+                return r;
+            });
+                    document.getElementById('statusIndicator').innerHTML = '🟢 서버 데이터 로드됨';
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.log('API fetch failed, using embedded data');
+                return false;
+            }
+        }
+
+        async function uploadDataToAPI(records) {
+            if (!API_URL) {
+                showToast('API URL이 설정되지 않았습니다.', 'error');
+                return false;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(records),
+                    headers: {'Content-Type': 'text/plain'}
+                });
+
+                if (response.ok) {
+                    showToast('데이터가 서버에 저장되었습니다. 모든 사용자에게 반영됩니다.', 'success');
+                    return true;
+                } else {
+                    showToast('데이터 저장 실패', 'error');
+                    return false;
+                }
+            } catch (error) {
+                showToast('API 요청 실패: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // File upload handling
+        function normalizeRecord(record) {
+            if (record['일자'] !== undefined && record['일자_str'] === undefined) record['일자_str'] = record['일자'];
+            if (record['판매수량'] !== undefined && record['수량'] === undefined) record['수량'] = record['판매수량'];
+            if (record['매출'] === undefined) {
+                if (record['매출금액-부별'] !== undefined) record['매출'] = record['매출금액-부별'];
+                else if (record['매출금액(vat-)'] !== undefined) record['매출'] = record['매출금액(vat-)'];
+                else if (record['판매금액'] !== undefined) record['매출'] = record['판매금액'];
+            }
+            if (record['일자_str']) record['일자_str'] = excelDateToISO(record['일자_str']) || record['일자_str'];
+            if (record['상품명']) record['상품명'] = cleanName(record['상품명']);
+            return record;
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+
+                    let records = [];
+
+                    // Parse 올리브영_raw sheet
+                    if (workbook.SheetNames.includes('올리브영_raw')) {
+                        const ws = workbook.Sheets['올리브영_raw'];
+                        const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+                        if (rows.length > 2) {
+                            const headers = rows[1]; // Row 2 (index 1) as headers
+                            for (let i = 2; i < rows.length; i++) {
+                                const row = rows[i];
+                                const record = {};
+                                headers.forEach((h, idx) => {
+                                    record[h] = row[idx];
+                                });
+
+                                normalizeRecord(record);
+
+                                records.push(record);
+                            }
+                        }
+                    }
+
+                    // Parse 올리브영온라인_raw sheet (online data)
+                    if (workbook.SheetNames.includes('올리브영온라인_raw')) {
+                        const ws = workbook.Sheets['올리브영온라인_raw'];
+                        const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+
+                        if (rows.length > 2) {
+                            const headers = rows[1];
+                            const onlineRecords = {};
+
+                            for (let i = 2; i < rows.length; i++) {
+                                const row = rows[i];
+                                const record = {};
+                                headers.forEach((h, idx) => {
+                                    record[h] = row[idx];
+                                });
+
+                                normalizeRecord(record);
+
+                                const key = `${record['일자_str']}|${record['상품명']}`;
+                                onlineRecords[key] = record;
+                            }
+
+                            // Process total records to extract offline
+                            const recordsByKey = {};
+                            records.forEach(r => {
+                                const key = `${r['일자_str']}|${r['상품명']}`;
+                                recordsByKey[key] = r;
+                            });
+
+                            // Calculate offline as Total - Online
+                            records = records.filter(r => {
+                                const key = `${r['일자_str']}|${r['상품명']}`;
+                                if (!onlineRecords[key]) return true; // Keep if no online record
+
+                                const online = onlineRecords[key];
+                                r['채널'] = '오프라인';
+                                r['수량'] = Math.max(0, (r['수량'] || 0) - (online['수량'] || 0));
+                                r['매출'] = Math.max(0, (r['매출'] || 0) - (online['매출'] || 0));
+                                r['매장수'] = Math.max(0, (r['매장수'] || 0) - (online['매장수'] || 0));
+
+                                return true;
+                            });
+
+                            // Add online records
+                            Object.values(onlineRecords).forEach(r => {
+                                r['채널'] = '온라인';
+                                records.push(r);
+                            });
+                        }
+                    }
+
+                    if (records.length > 0) {
+                        RAW_DATA = records;
+                        updateProductFilter();
+                        refreshDashboard();
+
+                        // Upload to API
+                        uploadDataToAPI(records);
+
+                        // Update file info
+                        document.getElementById('fileInfo').textContent = `✓ ${file.name} 로드됨 (${records.length}건)`;
+                        document.getElementById('fileInfo').classList.add('success');
+                    } else {
+                        showToast('유효한 데이터를 찾을 수 없습니다.', 'error');
+                    }
+                } catch (error) {
+                    showToast('파일 처리 오류: ' + error.message, 'error');
+                    console.error(error);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function updateProductFilter() {
+            const products = [...new Set(state.data.map(r => cleanName(r['상품명'])).filter(Boolean))].sort();
+            const select = document.getElementById('productFilter');
+            const selector = document.getElementById('productSelector');
+
+            select.innerHTML = '<option value="">전체</option>';
+            selector.innerHTML = '';
+
+            products.forEach((p, i) => {
+                const opt = document.createElement('option');
+                opt.value = p;
+                opt.textContent = p;
+                select.appendChild(opt);
+
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.value = p;
+                input.checked = i < 5; // Pre-select top 5
+                input.onchange = refreshTrendChart;
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(p));
+                selector.appendChild(label);
+            });
+        }
+
+        function filterData() {
+            state.filteredData = RAW_DATA.filter(r => {
+                const date = new Date(r['일자_str']);
+                if (date < state.dateFrom || date > state.dateTo) return false;
+                if (state.channelFilter && r['채널'] !== state.channelFilter) return false;
+                if (state.productFilter && cleanName(r['상품명']) !== state.productFilter) return false;
+                return true;
+            });
+        }
+
+        function refreshDashboard() {
+            state.data = RAW_DATA;
+            state.channelFilter = document.getElementById('channelFilter').value;
+            state.productFilter = document.getElementById('productFilter').value;
+
+            filterData();
+            updateProductFilter();
+            updateHeaderSubtitle();
+            updateTargetSection();
+            updateSalesStatus();
+            updateTop3();
+            updateGrowthRates();
+            updateAbsoluteGrowth();
+            updateDecline();
+            updateAnalysis();
+        }
+
+        function updateHeaderSubtitle() {
+            const count = state.filteredData.length;
+            const from = state.dateFrom?.toLocaleDateString('ko-KR') || '로딩';
+            const to = state.dateTo?.toLocaleDateString('ko-KR') || '로딩';
+            document.getElementById('headerSubtitle').textContent = `더랩바이블랑두 · 온라인/오프라인 통합 분석 · ${from} ~ ${to} · ${count}건`;
+        }
+
+        function loadTarget() {
+            const saved = localStorage.getItem('oy_daily_target');
+            if (saved) {
+                state.targetDaily = parseFloat(saved);
+                document.getElementById('targetInput').value = state.targetDaily / 10000;
+            }
+        }
+
+        function saveTarget() {
+            const val = parseFloat(document.getElementById('targetInput').value) || 0;
+            state.targetDaily = val * 10000; // Convert to won
+            localStorage.setItem('oy_daily_target', state.targetDaily);
+            showToast('목표가 저장되었습니다.', 'success');
+            updateTargetSection();
+        }
+
+        function updateTargetSection() {
+            if (state.targetDaily === 0) {
+                document.getElementById('todayRate').textContent = '-';
+                document.getElementById('todayAmount').textContent = '-';
+                document.getElementById('week7Rate').textContent = '-';
+                document.getElementById('week7Amount').textContent = '-';
+                document.getElementById('monthRate').textContent = '-';
+                document.getElementById('monthAmount').textContent = '-';
+                return;
+            }
+
+            // Today
+            const today = getToday();
+            const todayData = state.filteredData.filter(r => new Date(r['일자_str']).toDateString() === today.toDateString());
+            const todaySales = todayData.reduce((sum, r) => sum + (r['매출'] || 0), 0);
+            const todayRate = Math.round((todaySales / state.targetDaily) * 100);
+
+            document.getElementById('todayRate').textContent = todayRate + '%';
+            document.getElementById('todayAmount').textContent = fmtEok(todaySales);
+            updateProgressBar('todayProgress', todayRate);
+
+            // 7-day average
+            const last7 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000) && d <= today;
+            });
+            const uniqueDates = [...new Set(last7.map(r => r['일자_str']))];
+            const sales7d = last7.reduce((sum, r) => sum + (r['매출'] || 0), 0);
+            const avg7d = uniqueDates.length > 0 ? sales7d / uniqueDates.length : 0;
+            const week7Rate = Math.round((avg7d / state.targetDaily) * 100);
+
+            document.getElementById('week7Rate').textContent = week7Rate + '%';
+            document.getElementById('week7Amount').textContent = fmtEok(avg7d);
+            updateProgressBar('week7Progress', week7Rate);
+
+            // Month average
+            const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+            const monthData = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= monthStart && d <= today;
+            });
+            const uniqueDateMonth = [...new Set(monthData.map(r => r['일자_str']))];
+            const salesMonth = monthData.reduce((sum, r) => sum + (r['매출'] || 0), 0);
+            const avgMonth = uniqueDateMonth.length > 0 ? salesMonth / uniqueDateMonth.length : 0;
+            const monthRate = Math.round((avgMonth / state.targetDaily) * 100);
+
+            document.getElementById('monthRate').textContent = monthRate + '%';
+            document.getElementById('monthAmount').textContent = fmtEok(avgMonth);
+            updateProgressBar('monthProgress', monthRate);
+        }
+
+        function updateProgressBar(id, percentage) {
+            const bar = document.getElementById(id);
+            const width = Math.min(percentage, 100);
+            bar.style.width = width + '%';
+            bar.classList.toggle('orange', percentage < 100);
+        }
+
+        function updateSalesStatus() {
+            const today = getToday();
+            const { from: f30, to: t30 } = getDateRange('30days');
+            const { from: f7, to: t7 } = getDateRange('7days');
+
+            // Last 30 days
+            const data30 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f30 && d <= t30;
+            });
+            const sales30 = data30.reduce((s, r) => s + (r['매출'] || 0), 0);
+
+            // Previous 30 days
+            const pf30 = new Date(f30.getTime() - 30 * 24 * 60 * 60 * 1000);
+            const pt30 = new Date(f30.getTime() - 1);
+            const prev30 = RAW_DATA.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= pf30 && d <= pt30;
+            });
+            const prev30Sales = prev30.reduce((s, r) => s + (r['매출'] || 0), 0);
+
+            document.getElementById('sales30d').textContent = fmtEok(sales30);
+            if (prev30Sales > 0) {
+                const pct = Math.round(((sales30 - prev30Sales) / prev30Sales) * 100);
+                const cls = pct >= 0 ? 'positive' : 'negative';
+                const sgn = pct >= 0 ? '▲ +' : '▼ ';
+                document.getElementById('sales30dComp').innerHTML = `<span class="${cls}">${sgn}${Math.abs(pct)}% vs 이전 30일</span>`;
+            } else {
+                document.getElementById('sales30dComp').textContent = '이전 기간 데이터 부족';
+            }
+
+            // Last 7 days
+            const data7 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f7 && d <= t7;
+            });
+            const sales7 = data7.reduce((s, r) => s + (r['매출'] || 0), 0);
+
+            const pf7 = new Date(f7.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const pt7 = new Date(f7.getTime() - 1);
+            const prev7 = RAW_DATA.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= pf7 && d <= pt7;
+            });
+            const prev7Sales = prev7.reduce((s, r) => s + (r['매출'] || 0), 0);
+
+            document.getElementById('sales7d').textContent = fmtEok(sales7);
+            if (prev7Sales > 0) {
+                const pct = Math.round(((sales7 - prev7Sales) / prev7Sales) * 100);
+                const cls = pct >= 0 ? 'positive' : 'negative';
+                const sgn = pct >= 0 ? '▲ +' : '▼ ';
+                document.getElementById('sales7dComp').innerHTML = `<span class="${cls}">${sgn}${Math.abs(pct)}% vs 전주</span>`;
+            } else {
+                document.getElementById('sales7dComp').textContent = '이전 기간 데이터 부족';
+            }
+
+            // Today
+            const todayData = state.filteredData.filter(r => new Date(r['일자_str']).toDateString() === today.toDateString());
+            const salesToday = todayData.reduce((s, r) => s + (r['매출'] || 0), 0);
+
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yestData = RAW_DATA.filter(r => new Date(r['일자_str']).toDateString() === yesterday.toDateString());
+            const yestSales = yestData.reduce((s, r) => s + (r['매출'] || 0), 0);
+
+            document.getElementById('salesToday').textContent = fmtEok(salesToday);
+            if (yestSales > 0) {
+                const pct = Math.round(((salesToday - yestSales) / yestSales) * 100);
+                const cls = pct >= 0 ? 'positive' : 'negative';
+                const sgn = pct >= 0 ? '▲ +' : '▼ ';
+                document.getElementById('salesTodayComp').innerHTML = `<span class="${cls}">${sgn}${Math.abs(pct)}% vs 전일</span>`;
+            } else {
+                document.getElementById('salesTodayComp').textContent = '어제 데이터 부족';
+            }
+        }
+
+        function updateTop3() {
+            // Top 3 by 30-day revenue
+            const { from: f30, to: t30 } = getDateRange('30days');
+            const data30 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f30 && d <= t30;
+            });
+
+            const byProduct = {};
+            data30.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byProduct[name]) byProduct[name] = 0;
+                byProduct[name] += r['매출'] || 0;
+            });
+
+            const sorted = Object.entries(byProduct)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3);
+
+            let html = '';
+            if (sorted.length === 0) {
+                html = '<div class="card"><div class="empty-message">데이터 없음</div></div>';
+            } else {
+                sorted.forEach(([ name, sales ], idx) => {
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${name}</div>
+                        <div class="card-value" style="font-size: 20px; color: #6b7c3e;">${fmtEok(sales)}</div>
+                    </div>`;
+                });
+            }
+            document.getElementById('top3-30days-grid').innerHTML = html;
+        }
+
+        function updateGrowthRates() {
+            const { from: f7, to: t7 } = getDateRange('7days');
+            const { from: f14, to: t14 } = {
+                from: new Date(f7.getTime() - 7 * 24 * 60 * 60 * 1000),
+                to: new Date(f7.getTime() - 1)
+            };
+
+            // Get month-to-date revenue for filtering
+            const today = getToday();
+            const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+            const mtdData = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= monthStart && d <= today;
+            });
+
+            const mtdByProduct = {};
+            mtdData.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!mtdByProduct[name]) mtdByProduct[name] = 0;
+                mtdByProduct[name] += r['매출'] || 0;
+            });
+
+            // Last 7 days
+            const data7 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f7 && d <= t7;
+            });
+
+            const by7 = {};
+            data7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!by7[name]) by7[name] = 0;
+                by7[name] += r['매출'] || 0;
+            });
+
+            // Prior 7 days
+            const prev7 = RAW_DATA.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f14 && d <= t14;
+            });
+
+            const byPrev7 = {};
+            prev7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byPrev7[name]) byPrev7[name] = 0;
+                byPrev7[name] += r['매출'] || 0;
+            });
+
+            // Calculate growth for qualifying products
+            const growth = [];
+            Object.entries(by7).forEach(([ name, sales7 ]) => {
+                if ((mtdByProduct[name] || 0) >= 1000000) {
+                    const prev = byPrev7[name] || 0;
+                    const change = sales7 - prev;
+                    const pct = prev > 0 ? Math.round((change / prev) * 100) : 0;
+                               growth.push({ name, sales7, prev, change, pct });
+                }
+            });
+
+            growth.sort((a, b) => b.pct - a.pct);
+            const top3 = growth.slice(0, 3);
+
+            let html = '';
+            if (top3.length === 0) {
+                html = '<div class="card"><div class="empty-message">7일 성장한 상품 없음</div></div>';
+            } else {
+                top3.forEach((item, idx) => {
+                    const sgn = item.pct >= 0 ? '▲ +' : '▼ ';
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${item.name}</div>
+                        <div class="card-value" style="font-size: 20px; color: ${item.pct >= 0 ? '#27ae60' : '#e74c3c'};">${sgn}${Math.abs(item.pct)}%</div>
+                        <div class="card-unit">${fmtEok(item.change)}</div>
+                    </div>`;
+                });
+            }
+            document.getElementById('growthRate-top3-grid').innerHTML = html;
+        }
+
+        function updateAbsoluteGrowth() {
+            const { from: f7, to: t7 } = getDateRange('7days');
+            const { from: f14, to: t14 } = {
+                from: new Date(f7.getTime() - 7 * 24 * 60 * 60 * 1000),
+                to: new Date(f7.getTime() - 1)
+            };
+
+            const data7 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f7 && d <= t7;
+            });
+
+            const by7 = {};
+            data7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!by7[name]) by7[name] = 0;
+                by7[name] += r['매출'] || 0;
+            });
+
+            const prev7 = RAW_DATA.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f14 && d <= t14;
+            });
+
+            const byPrev7 = {};
+            prev7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byPrev7[name]) byPrev7[name] = 0;
+                byPrev7[name] += r['매출'] || 0;
+            });
+
+            const growth = [];
+            Object.entries(by7).forEach(([ name, sales7 ]) => {
+                const prev = byPrev7[name] || 0;
+                const change = sales7 - prev;
+                if (change > 0) {
+                    growth.push({ name, sales7, prev, change });
+                }
+            });
+
+            growth.sort((a, b) => b.change - a.change);
+            const top3 = growth.slice(0, 3);
+
+            let html = '';
+            if (top3.length === 0) {
+                html = '<div class="card"><div class="empty-message">7일 성장한 상품 없음</div></div>';
+            } else {
+                top3.forEach((item, idx) => {
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${item.name}</div>
+                        <div class="card-value" style="font-size: 20px; color: #27ae60;">▲ ${fmtEok(item.change)}</div>
+                        <div class="card-unit">${fmtEok(item.prev)} → ${fmtEok(item.sales7)}</div>
+                    </div>`;
+                });
+            }
+            document.getElementById('absoluteGrowth-top3-grid').innerHTML = html;
+        }
+
+        function updateDecline() {
+            const { from: f7, to: t7 } = getDateRange('7days');
+            const { from: f14, to: t14 } = {
+                from: new Date(f7.getTime() - 7 * 24 * 60 * 60 * 1000),
+                to: new Date(f7.getTime() - 1)
+            };
+
+            const data7 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f7 && d <= t7;
+            });
+
+            const by7 = {};
+            data7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!by7[name]) by7[name] = 0;
+                by7[name] += r['매출'] || 0;
+            });
+
+            const prev7 = RAW_DATA.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f14 && d <= t14;
+            });
+
+            const byPrev7 = {};
+            prev7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byPrev7[name]) byPrev7[name] = 0;
+                byPrev7[name] += r['매출'] || 0;
+            });
+
+            const decline = [];
+            Object.entries(byPrev7).forEach(([ name, prev ]) => {
+                const sales7 = by7[name] || 0;
+                const change = sales7 - prev;
+                if (change < 0) {
+                    decline.push({ name, sales7, prev, change });
+                }
+            });
+
+            decline.sort((a, b) => a.change - b.change);
+            const worst3 = decline.slice(0, 3);
+
+            let html = '';
+            if (worst3.length === 0) {
+                html = '<div class="card"><div class="empty-message">하락 상품 없음</div></div>';
+            } else {
+                worst3.forEach((item, idx) => {
+                    html += `<div class="card">
+                        <div class="rank-badge">${idx + 1}위</div>
+                        <div style="font-weight: 600; color: #333; margin-bottom: 8px;">${item.name}</div>
+                        <div class="card-value" style="font-size: 20px; color: #e74c3c;">▼ ${fmtEok(Math.abs(item.change))}</div>
+                        <div class="card-unit">${fmtEok(item.prev)} → ${fmtEok(item.sales7)}</div>
+                    </div>`;
+                });
+            }
+            document.getElementById('decline-bottom3-grid').innerHTML = html;
+        }
+
+        function updateAnalysis() {
+            const { from: f7, to: t7 } = getDateRange('7days');
+            const { from: f14, to: t14 } = {
+                from: new Date(f7.getTime() - 7 * 24 * 60 * 60 * 1000),
+                to: new Date(f7.getTime() - 1)
+            };
+
+            // Top 1 product by revenue
+            const byProduct = {};
+            state.filteredData.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byProduct[name]) byProduct[name] = 0;
+                byProduct[name] += r['매출'] || 0;
+            });
+
+            const topProduct = Object.entries(byProduct).sort((a, b) => b[1] - a[1])[0];
+            const topName = topProduct ? topProduct[0] : 'N/A';
+
+            // Top growth
+            const data7 = state.filteredData.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f7 && d <= t7;
+            });
+
+            const by7 = {};
+            data7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!by7[name]) by7[name] = 0;
+                by7[name] += r['매출'] || 0;
+            });
+
+            const prev7 = RAW_DATA.filter(r => {
+                const d = new Date(r['일자_str']);
+                return d >= f14 && d <= t14;
+            });
+
+            const byPrev7 = {};
+            prev7.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byPrev7[name]) byPrev7[name] = 0;
+                byPrev7[name] += r['매출'] || 0;
+            });
+
+            let topGrowthName = 'N/A';
+            let topGrowthPct = 0;
+            Object.entries(by7).forEach(([ name, sales7 ]) => {
+                const prev = byPrev7[name] || 0;
+                const pct = prev > 0 ? Math.round((sales7 - prev) / prev * 100) : 0;
+                if (pct > topGrowthPct) {
+                    topGrowthPct = pct;
+                    topGrowthName = name;
+                }
+            });
+
+            // Channel breakdown
+            const onlineTotal = state.filteredData.filter(r => r['채널'] === '온라인').reduce((s, r) => s + (r['매출'] || 0), 0);
+            const offlineTotal = state.filteredData.filter(r => r['채널'] === '오프라인').reduce((s, r) => s + (r['매출'] || 0), 0);
+            const totalSales = onlineTotal + offlineTotal;
+            const onlinePct = totalSales > 0 ? Math.round(onlineTotal / totalSales * 100) : 0;
+            const offlinePct = 100 - onlinePct;
+
+            let analysisText = 'ANALYSIS SUMMARY\n\n';
+            analysisText += `매출 1위 상품: ${topName}\n`;
+            analysisText += `상승률 1위: ${topGrowthName} (+${topGrowthPct}%)\n`;
+            analysisText += `채널 분석: 온라인 ${onlinePct}% / 오프라인 ${offlinePct}%`;
+
+            document.getElementById('analysisText').textContent = analysisText;
+
+            // Top 15 products table
+            const top15 = Object.entries(byProduct)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15);
+
+            let tableHtml = '<table><thead><tr><th>순위</th><th>상품명</th><th>매출</th></tr></thead><tbody>';
+            top15.forEach(([ name, sales ], idx) => {
+                tableHtml += `<tr><td>${idx + 1}</td><td>${name}</td><td>${fmtEok(sales)}</td></tr>`;
+            });
+            tableHtml += '</tbody></table>';
+
+            document.getElementById('topProductsTable').innerHTML = tableHtml;
+
+            // Update tab content
+            updateChartsTab();
+        }
+
+        function updateChartsTab() {
+            // Weekday chart
+            updateWeekdayChart();
+
+            // Trend chart
+            updateTrendChart();
+
+            // Full data table
+            updateFullDataTable();
+        }
+
+        function updateWeekdayChart() {
+            const { from: f7, to: t7 } = getDateRange('7days');
+
+            const byDay = [0, 0, 0, 0, 0, 0, 0];
+            const dayCount = [0, 0, 0, 0, 0, 0, 0];
+
+            state.filteredData.forEach(r => {
+                const d = new Date(r['일자_str']);
+                if (d >= f7 && d <= t7) {
+                    const day = d.getDay();
+                    byDay[day] += r['매출'] || 0;
+                    dayCount[day] += 1;
+                }
+            });
+
+            const avgByDay = byDay.map((s, i) => dayCount[i] > 0 ? s / dayCount[i] : 0);
+
+            destroyChart('weekdayChart');
+            const ctx = document.getElementById('weekdayChart').getContext('2d');
+            state.charts.weekdayChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['일', '월', '화', '수', '목', '금', '토'],
+                    datasets: [{
+                        label: '평균 매출 (만원)',
+                        data: avgByDay.map(v => Math.round(v / 10000)),
+                        backgroundColor: '#6b7c3e',
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function updateTrendChart() {
+            refreshTrendChart();
+        }
+
+        function refreshTrendChart() {
+            const selectedProducts = Array.from(document.querySelectorAll('#productSelector input[type="checkbox"]:checked')).map(cb => cb.value);
+            const metric = document.querySelector('input[name="metric"]:checked')?.value || 'sales';
+
+            if (selectedProducts.length === 0) return;
+
+            const { from: f30, to: t30 } = getDateRange('30days');
+            const allDates = new Set();
+
+            state.filteredData.forEach(r => {
+                const d = new Date(r['일자_str']);
+                if (d >= f30 && d <= t30) allDates.add(r['일자_str']);
+            });
+
+            const sortedDates = Array.from(allDates).sort();
+
+            const datasets = selectedProducts.map((product, idx) => {
+                const colors = ['#6b7c3e', '#8ab446', '#a8c856', '#d4c4a8', '#b88d6b'];
+                const color = colors[idx % colors.length];
+
+                const data = sortedDates.map(date => {
+                    const records = state.filteredData.filter(r => r['일자_str'] === date && cleanName(r['상품명']) === product);
+                    const total = records.reduce((s, r) => s + (metric === 'sales' ? r['매출'] || 0 : r['수량'] || 0), 0);
+                    return metric === 'sales' ? Math.round(total / 10000) : total;
+                });
+
+                return {
+                    label: product,
+                    data: data,
+                    borderColor: color,
+                    backgroundColor: color + '20',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: false
+                };
+            });
+
+            destroyChart('trendChart');
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            state.charts.trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedDates,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: true } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        function updateFullDataTable() {
+            const byProduct = {};
+            state.filteredData.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byProduct[name]) byProduct[name] = { count: 0, sales: 0 };
+                byProduct[name].sales += r['매출'] || 0;
+                byProduct[name].count += r['수량'] || 0;
+            });
+
+            const sorted = Object.entries(byProduct)
+                .map(([name, data]) => ({ name, ...data }))
+                .sort((a, b) => b.sales - a.sales);
+
+            let html = '<table><thead><tr><th>순위</th><th>상품명</th><th>수량</th><th>매출</th></tr></thead><tbody>';
+            sorted.forEach((item, idx) => {
+                html += `<tr><td>${idx + 1}</td><td>${item.name}</td><td>${fmtNum(item.count)}</td><td>${fmtEok(item.sales)}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('fullDataContent').innerHTML = html;
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.chart-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function destroyChart(canvasId) {
+            if (state.charts[canvasId]) {
+                state.charts[canvasId].destroy();
+                delete state.charts[canvasId];
+            }
+        }
+
+        function showAIPromptModal() {
+            const { from: f7, to: t7 } = getDateRange('7days');
+
+            const byProduct = {};
+            state.filteredData.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (!byProduct[name]) byProduct[name] = 0;
+                byProduct[name] += r['매출'] || 0;
+            });
+
+            const top10 = Object.entries(byProduct)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10)
+                .map(([ name, sales ]) => `- ${name}: ${fmtEok(sales)}`)
+                .join('\n');
+
+            const prompt = `다음은 올리브영 매출 대시보드 데이터입니다. 자세한 분석을 제공해주세요:\n\n기간: ${f7.toLocaleDateString('ko-KR')} ~ ${t7.toLocaleDateString('ko-KR')}\n${state.filteredData.length}건 데이터\n\n상위 10개 상품:\n${top10}\n\n분석 관점:\n1. 상품별 매출 현황 및 트렌드\n2. 온라인/오프라인 채널 성과\n3. 주요 성과 요인과 개선 기회\n4. 향후 전략 제안`;
 
             document.getElementById('aiPromptText').textContent = prompt;
             document.getElementById('aiPromptModal').classList.add('show');
@@ -1786,7 +4073,7 @@
             const uploadZone = document.querySelector('.upload-zone');
             uploadZone.addEventListener('dragover', e => {
                 e.preventDefault();
-                uploadZone.style.background = '#f0f0ff';
+                uploadZone.style.background = '#f0f0f0';
             });
             uploadZone.addEventListener('dragleave', () => {
                 uploadZone.style.background = '';
@@ -1806,4 +4093,4 @@
         })();
     </script>
 </body>
-</html>
+    </html>
