@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>올리브영 매출 대시보드</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"><\/script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -553,12 +553,12 @@
             }
         }
     </style>
-<\/head>
+</head>
 <body>
     <div class="header">
         <h1>올리브영 매출 대시보드</h1>
         <p id="headerSubtitle">데이터를 불러오는 중...</p>
-        <button class="btn" onclick="showAIPromptModal()">AI 분석 프롬프트 생성</button>
+        <button class="btn" onclick="showAIPromptModal()">AI,분석 프렬프트 생성</button>
     </div>
 
     <div class="container">
@@ -566,7 +566,7 @@
         <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
             <p>📁 Excel 파일을 여기에 드래그하거나 클릭하여 업로드</p>
             <p style="font-size: 12px; color: #999;">지원 형식: .xlsx, .xlsm</p>
-            <div class="file-info" id="fileInfo"><\/div>
+            <div class="file-info" id="fileInfo"></div>
             <input type="file" id="fileInput" accept=".xlsx,.xlsm" onchange="handleFileUpload(event)">
         </div>
 
@@ -596,7 +596,7 @@
                         <input type="date" id="dateFrom" onchange="updateCustomDateRange()">
                         <input type="date" id="dateTo" onchange="updateCustomDateRange()">
                     </div>
-                    <div class="range-labels" id="rangeLabels"><\/div>
+                    <div class="range-labels" id="rangeLabels"></div>
                 </div>
             </div>
 
@@ -606,23 +606,7 @@
                     <select id="channelFilter" onchange="refreshDashboard()">
                         <option value="">전체</option>
                         <option value="온라인">온라인</option>
-                        <option value="오프라인">오프라인</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label style="font-size: 12px; color: #666; margin-bottom: 6px; display: block;">상품</label>
-                    <select id="productFilter" onchange="refreshDashboard()">
-                        <option value="">전체</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Target Management -->
-        <div class="section">
-            <div class="section-title">목표 관리</div>
-            <div class="card">
+                        <option value="오프라        <div class="card">
                 <div class="target-input-group">
                     <input type="number" id="targetInput" placeholder="일 평균 목표 매출 (만원)" step="10" min="0">
                     <button class="btn" style="background: #667eea; color: white; border-color: #667eea;" onclick="saveTarget()">저장</button>
@@ -634,7 +618,7 @@
                         <div class="card-value" id="todayRate">-</div>
                         <div class="card-unit" id="todayAmount">-</div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="todayProgress" style="width: 0%;"><\/div>
+                            <div class="progress-fill" id="todayProgress" style="width: 0%;"></div>
                         </div>
                     </div>
 
@@ -643,7 +627,7 @@
                         <div class="card-value" id="week7Rate">-</div>
                         <div class="card-unit" id="week7Amount">-</div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="week7Progress" style="width: 0%;"><\/div>
+                            <div class="progress-fill" id="week7Progress" style="width: 0%;"></div>
                         </div>
                     </div>
 
@@ -652,7 +636,7 @@
                         <div class="card-value" id="monthRate">-</div>
                         <div class="card-unit" id="monthAmount">-</div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="monthProgress" style="width: 0%;"><\/div>
+                            <div class="progress-fill" id="monthProgress" style="width: 0%;"></div>
                         </div>
                     </div>
                 </div>
@@ -688,7 +672,7 @@
             <div class="section-title">최근 30일 매출 Top 3</div>
             <div class="cards-grid">
                 <div class="card">
-                    <div id="top3-30days"><\/div>
+                    <div id="top3-30days"></div>
                 </div>
             </div>
         </div>
@@ -698,7 +682,7 @@
             <div class="section-title">7일 성장률 Top 3</div>
             <div class="cards-grid">
                 <div class="card">
-                    <div id="growthRate-top3"><\/div>
+                    <div id="growthRate-top3"></div>
                 </div>
             </div>
         </div>
@@ -708,7 +692,7 @@
             <div class="section-title">7일 매출액 성장 Top 3</div>
             <div class="cards-grid">
                 <div class="card">
-                    <div id="absoluteGrowth-top3"><\/div>
+                    <div id="absoluteGrowth-top3"></div>
                 </div>
             </div>
         </div>
@@ -718,7 +702,7 @@
             <div class="section-title">7일 매출 하락 Worst 3</div>
             <div class="cards-grid">
                 <div class="card">
-                    <div id="decline-bottom3"><\/div>
+                    <div id="decline-bottom3"></div>
                 </div>
             </div>
         </div>
@@ -728,7 +712,7 @@
             <div class="section-title">요일별 분석</div>
             <div class="card">
                 <div class="chart-container">
-                    <canvas id="weekdayChart"><\/canvas>
+                    <canvas id="weekdayChart"></canvas>
                 </div>
             </div>
         </div>
@@ -738,7 +722,7 @@
             <div class="section-title">제품별 일간 판매 추이</div>
             <div class="card">
                 <label style="font-size: 12px; color: #666; margin-bottom: 12px; display: block;">상품 선택</label>
-                <div class="product-selector" id="productSelector"><\/div>
+                <div class="product-selector" id="productSelector"></div>
 
                 <div class="metric-toggle">
                     <label>
@@ -752,7 +736,7 @@
                 </div>
 
                 <div class="chart-container">
-                    <canvas id="trendChart"><\/canvas>
+                    <canvas id="trendChart"></canvas>
                 </div>
             </div>
         </div>
@@ -761,10 +745,10 @@
         <div class="section">
             <div class="section-title">매출 분석</div>
             <div class="card">
-                <div class="analysis-text" id="analysisText"><\/div>
+                <div class="analysis-text" id="analysisText"></div>
 
                 <h3 style="font-size: 13px; color: #666; margin-top: 20px; margin-bottom: 12px; text-transform: uppercase; font-weight: 600;">상위 15개 상품</h3>
-                <div id="topProductsTable"><\/div>
+                <div id="topProductsTable"></div>
             </div>
         </div>
     </div>
@@ -777,7 +761,7 @@
                 <strong>💎 Gemini가 가장 현실적인 분석을 제공합니다 (1순위 추천)</strong><br>
                 다른 AI 도구로는 Claude, ChatGPT 등을 사용할 수 있습니다.
             </div>
-            <div class="ai-prompt-text" id="aiPromptText"><\/div>
+            <div class="ai-prompt-text" id="aiPromptText"></div>
             <div class="modal-buttons">
                 <button class="btn-secondary" onclick="closeAIPromptModal()">닫기</button>
                 <button class="btn-primary" onclick="copyAIPrompt()">클립보드에 복사</button>
@@ -995,6 +979,19 @@
         }
 
         // File upload handling
+        function normalizeRecord(record) {
+            if (record['일자'] !== undefined && record['일자_str'] === undefined) record['일자_str'] = record['일자'];
+            if (record['판매수량'] !== undefined && record['수량'] === undefined) record['수량'] = record['판매수량'];
+            if (record['매출'] === undefined) {
+                if (record['매출금액-부별'] !== undefined) record['매출'] = record['매출금액-부별'];
+                else if (record['매출금액(vat-)'] !== undefined) record['매출'] = record['매출금액(vat-)'];
+                else if (record['판매금액'] !== undefined) record['매출'] = record['판매금액'];
+            }
+            if (record['일자_str']) record['일자_str'] = excelDateToISO(record['일자_str']) || record['일자_str'];
+            if (record['상품명']) record['상품명'] = cleanName(record['상품명']);
+            return record;
+        }
+
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1007,33 +1004,6 @@
 
                     let records = [];
 
-                    // Column name mapping: Excel header → internal name
-                    function normalizeRecord(record) {
-                        // Map date column
-                        if (record['일자'] !== undefined && record['일자_str'] === undefined) {
-                            record['일자_str'] = record['일자'];
-                        }
-                        // Map quantity column
-                        if (record['판매수량'] !== undefined && record['수량'] === undefined) {
-                            record['수량'] = record['판매수량'];
-                        }
-                        // Map sales column (올리브영_raw uses 매출금액-부별)
-                        if (record['매출'] === undefined) {
-                            if (record['매출금액-부별'] !== undefined) record['매출'] = record['매출금액-부별'];
-                            else if (record['매출금액(vat-)'] !== undefined) record['매출'] = record['매출금액(vat-)'];
-                            else if (record['판매금액'] !== undefined) record['매출'] = record['판매금액'];
-                        }
-                        // Parse date
-                        if (record['일자_str']) {
-                            record['일자_str'] = excelDateToISO(record['일자_str']) || record['일자_str'];
-                        }
-                        // Clean product name
-                        if (record['상품명']) {
-                            record['상품명'] = cleanName(record['상품명']);
-                        }
-                        return record;
-                    }
-
                     // Parse 올리브영_raw sheet
                     if (workbook.SheetNames.includes('올리브영_raw')) {
                         const ws = workbook.Sheets['올리브영_raw'];
@@ -1043,13 +1013,13 @@
                             const headers = rows[1]; // Row 2 (index 1) as headers
                             for (let i = 2; i < rows.length; i++) {
                                 const row = rows[i];
-                                if (!row || row.length === 0) continue;
                                 const record = {};
                                 headers.forEach((h, idx) => {
-                                    if (h) record[h] = row[idx];
+                                    record[h] = row[idx];
                                 });
 
                                 normalizeRecord(record);
+
                                 records.push(record);
                             }
                         }
@@ -1066,10 +1036,9 @@
 
                             for (let i = 2; i < rows.length; i++) {
                                 const row = rows[i];
-                                if (!row || row.length === 0) continue;
                                 const record = {};
                                 headers.forEach((h, idx) => {
-                                    if (h) record[h] = row[idx];
+                                    record[h] = row[idx];
                                 });
 
                                 normalizeRecord(record);
@@ -1316,9 +1285,9 @@
                 const pct = Math.round(((sales7 - prev7Sales) / prev7Sales) * 100);
                 const cls = pct >= 0 ? 'positive' : 'negative';
                 const sgn = pct >= 0 ? '+' : '';
-                document.getElementById('sales7dComp').innerHTML = `<span class="${cls}">이전 7일 대비 ${sgn}${pct}%</span>`;
+                document.getElentById('sales7dComp').innerHTML = `<span class="${cls}">이전 7일 대비 ${sgn}${pct}%</span>`;
             } else {
-                document.getElementById('sales7dComp').textContent = '이전 기간 데이터 부족';
+                document.getElementById('sales7dComp').textContent = '이저 기가 데이터 부족';
             }
 
             // Today
@@ -1426,7 +1395,7 @@
                     const prev = byPrev7[name] || 0;
                     const change = sales7 - prev;
                     const pct = prev > 0 ? Math.round((change / prev) * 100) : 0;
-                    growth.push({ name, sales7, prev, change, pct });
+                               growth.push({ name, sales7, prev, change, pct });
                 }
             });
 
@@ -1717,7 +1686,7 @@
 
             let analysisText = 'ANALYSIS SUMMARY\n\n';
             analysisText += `매출 1위 상품: ${topName}\n`;
-            analysisText += `상승 폭 1위: ${topGrowthName} (+${topGrowthPct}%)\n`;
+            analysisText += `상승 �m 1위: ${topGrowthName} (+${topGrowthPct}%)\n`;
             analysisText += `채널 분석: 온라인 ${onlinePct}% / 오프라인 ${offlinePct}%`;
 
             document.getElementById('analysisText').textContent = analysisText;
@@ -1759,7 +1728,7 @@
                 .map(([ name, sales ]) => `- ${name}: ${fmtManwon(sales)}`)
                 .join('\n');
 
-            const prompt = `다음은 올리브영 매출 대시보드 데이터입니다. 자세한 분석을 제공해주세요:\n\n기간: ${f7.toLocaleDateString('ko-KR')} ~ ${t7.toLocaleDateString('ko-KR')}\n${state.filteredData.length}건 데이터\n\n상위 10개 상품:\n${top10}\n\n분석 관점:\n1. 상품별 매출 현황 및 트렌드\n2. 온라인/오프라인 채널 성과\n3. 주요 성공 요인과 개선 기회\n4. 향후 전략 제안`;
+            const prompt = `다음은 올리브영 매출 대시보드 데이터입니다. 자세한 분석을 제공해주세요:\n\n기간: ${f7.toLocaleDateString('ko-KR')} ~ ${t7.toLocaleDateString('ko-KR')}\n${state.filteredData.length}건 데이터\n\n상위 10개 상품:\n${top10}\n\n분석 관점:\n1. 상품�괐 매출 현황 및 트렌드\n2. 온라인/오프라인 채널 성과\n3. 주요 성과 요인과 개선 기회\n4. 행후 전랹䠜안`;
 
             document.getElementById('aiPromptText').textContent = prompt;
             document.getElementById('aiPromptModal').classList.add('show');
@@ -1782,7 +1751,7 @@
             toast.textContent = msg;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
-        }
+        }g
 
         // Initialize
         (async () => {
@@ -1818,5 +1787,5 @@
             refreshDashboard();
         })();
     </script>
-<\/body>
-<\/html>
+</body>
+</html>
