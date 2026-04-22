@@ -858,7 +858,7 @@
             document.querySelectorAll('.controls .btn-group .btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target?.classList.add('active');
+            const ab = document.querySelector(`.btn[onclick*="${rangeType}"]`); if (ab) ab.classList.add('active');
 
             // Update date inputs
             document.getElementById('dateFrom').value = from.toISOString().split('T')[0];
