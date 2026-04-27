@@ -284,6 +284,11 @@
             box-shadow: 0 0 12px rgba(167, 139, 250, 0.2);
         }
 
+        select option {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+
         .range-labels {
             font-size: 11px;
             color: #64748b;
@@ -931,8 +936,8 @@
                 <div class="target-section">
                     <div class="target-input-group">
                         <label>일 평균 목표 매출</label>
-                        <input type="number" id="targetInput" placeholder="목표 금액" step="10" min="0">
-                        <span class="unit">원</span>
+                        <input type="number" id="targetInput" placeholder="예: 1000" step="10" min="0">
+                        <span class="unit">만원</span>
                         <button class="target-save-btn" onclick="saveTarget()">저장</button>
                     </div>
 
@@ -1566,13 +1571,13 @@
             const saved = localStorage.getItem('oy_daily_target');
             if (saved) {
                 state.targetDaily = parseFloat(saved);
-                document.getElementById('targetInput').value = state.targetDaily;
+                document.getElementById('targetInput').value = Math.round(state.targetDaily / 10000);
             }
         }
 
         function saveTarget() {
-            const val = parseFloat(document.getElementById('targetInput').value) || 0;
-            state.targetDaily = val;
+            const valManwon = parseFloat(document.getElementById('targetInput').value) || 0;
+            state.targetDaily = valManwon * 10000;
             localStorage.setItem('oy_daily_target', state.targetDaily);
             showToast('목표가 저장되었습니다.', 'success');
             updateTargetSection();
