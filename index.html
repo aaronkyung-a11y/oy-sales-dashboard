@@ -2029,16 +2029,16 @@
         }
 
         function updateChartsTab() {
-            // Top 5 chart (default tab)
-            updateTop5Chart();
+            // Only render charts for the currently visible tab
+            // (Chart.js cannot render into hidden canvases properly)
+            const activeTab = document.querySelector('.tab-content.active');
+            const activeId = activeTab ? activeTab.id : 'productTop5';
 
-            // Weekday chart
-            updateWeekdayChart();
+            if (activeId === 'productTop5') updateTop5Chart();
+            else if (activeId === 'dailyTrend') refreshTrendChart();
+            else if (activeId === 'weekday') updateWeekdayChart();
 
-            // Trend chart
-            updateTrendChart();
-
-            // Full data table
+            // Full data table can render hidden
             updateFullDataTable();
         }
 
@@ -2249,6 +2249,13 @@
             // Show selected tab
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
+
+            // Re-render charts after tab is visible (Chart.js needs visible canvas)
+            setTimeout(() => {
+                if (tabName === 'productTop5') updateTop5Chart();
+                else if (tabName === 'dailyTrend') refreshTrendChart();
+                else if (tabName === 'weekday') updateWeekdayChart();
+            }, 50);
         }
 
         function destroyChart(canvasId) {
