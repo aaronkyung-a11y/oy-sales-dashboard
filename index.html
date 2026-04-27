@@ -1056,13 +1056,19 @@
             <div class="section-content">
                 <div class="card">
                     <div class="chart-tabs">
-                        <button class="chart-tab active" onclick="switchTab('dailyTrend')">📈 일별 추이</button>
-                        <button class="chart-tab" onclick="switchTab('productTop5')">🏷 제품별 Top5</button>
+                        <button class="chart-tab active" onclick="switchTab('productTop5')">🏷 제품별 Top5</button>
+                        <button class="chart-tab" onclick="switchTab('dailyTrend')">📈 일별 추이</button>
                         <button class="chart-tab" onclick="switchTab('weekday')">📊 요일별 분석</button>
                         <button class="chart-tab" onclick="switchTab('fullData')">📋 전체 데이터</button>
                     </div>
 
-                    <div id="dailyTrend" class="tab-content active">
+                    <div id="productTop5" class="tab-content active">
+                        <div class="chart-container" style="height: 400px;">
+                            <canvas id="top5Chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="dailyTrend" class="tab-content">
                         <label style="font-size: 12px; color: #a78bfa; margin-bottom: 12px; display: block; font-weight: 600; text-transform: uppercase;">상품 선택</label>
                         <div class="product-selector" id="productSelector"></div>
                         <div class="metric-toggle">
@@ -1077,12 +1083,6 @@
                         </div>
                         <div class="chart-container">
                             <canvas id="trendChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div id="productTop5" class="tab-content">
-                        <div class="chart-container">
-                            <canvas id="top5Chart"></canvas>
                         </div>
                     </div>
 
@@ -1496,10 +1496,21 @@
             const select = document.getElementById('productFilter');
             const selector = document.getElementById('productSelector');
 
+            // Calculate sales by product to find top 5
+            const salesByProduct = {};
+            state.filteredData.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (name) salesByProduct[name] = (salesByProduct[name] || 0) + (r['매출'] || 0);
+            });
+            const top5Products = Object.entries(salesByProduct)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(e => e[0]);
+
             select.innerHTML = '<option value="">전체</option>';
             selector.innerHTML = '';
 
-            products.forEach((p, i) => {
+            products.forEach((p) => {
                 const opt = document.createElement('option');
                 opt.value = p;
                 opt.textContent = p;
@@ -1509,7 +1520,7 @@
                 const input = document.createElement('input');
                 input.type = 'checkbox';
                 input.value = p;
-                input.checked = i < 5; // Pre-select top 5
+                input.checked = top5Products.includes(p);
                 input.onchange = refreshTrendChart;
                 label.appendChild(input);
                 label.appendChild(document.createTextNode(p));
@@ -2018,6 +2029,9 @@
         }
 
         function updateChartsTab() {
+            // Top 5 chart (default tab)
+            updateTop5Chart();
+
             // Weekday chart
             updateWeekdayChart();
 
@@ -2026,6 +2040,71 @@
 
             // Full data table
             updateFullDataTable();
+        }
+
+        function updateTop5Chart() {
+            const salesByProduct = {};
+            state.filteredData.forEach(r => {
+                const name = cleanName(r['상품명']);
+                if (name) salesByProduct[name] = (salesByProduct[name] || 0) + (r['매출'] || 0);
+            });
+
+            const top5 = Object.entries(salesByProduct)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            const labels = top5.map(e => e[0]);
+            const data = top5.map(e => Math.round(e[1] / 10000));
+            const colors = ['#a78bfa', '#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6'];
+
+            destroyChart('top5Chart');
+            const ctx = document.getElementById('top5Chart').getContext('2d');
+
+            Chart.defaults.color = '#c3cadb';
+            Chart.defaults.borderColor = '#263059';
+
+            state.charts.top5Chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '매출 (만원)',
+                        data: data,
+                        backgroundColor: colors,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ctx.raw.toLocaleString() + '만원';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(v) { return v.toLocaleString() + '만'; }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: { size: 12, weight: '600' },
+                                color: '#e2e8f0'
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function updateWeekdayChart() {
