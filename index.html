@@ -1567,7 +1567,24 @@
             document.getElementById('headerSubtitle').textContent = `더랩바이블랑두 · 온라인/오프라인 통합 분석 · ${from} ~ ${to} · ${count}건`;
         }
 
-        function loadTarget() {
+        async function loadTarget() {
+            // Try server first, fallback to localStorage
+            if (API_URL) {
+                try {
+                    const response = await fetch(API_URL + '?action=getConfig');
+                    if (response.ok) {
+                        const config = await response.json();
+                        if (config.dailyTarget) {
+                            state.targetDaily = parseFloat(config.dailyTarget);
+                            document.getElementById('targetInput').value = Math.round(state.targetDaily / 10000);
+                            updateTargetSection();
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.log('Server config load failed, using localStorage');
+                }
+            }
             const saved = localStorage.getItem('oy_daily_target');
             if (saved) {
                 state.targetDaily = parseFloat(saved);
@@ -1575,11 +1592,29 @@
             }
         }
 
-        function saveTarget() {
+        async function saveTarget() {
             const valManwon = parseFloat(document.getElementById('targetInput').value) || 0;
             state.targetDaily = valManwon * 10000;
             localStorage.setItem('oy_daily_target', state.targetDaily);
-            showToast('목표가 저장되었습니다.', 'success');
+
+            if (API_URL) {
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'saveConfig', config: { dailyTarget: state.targetDaily } }),
+                        headers: {'Content-Type': 'text/plain'}
+                    });
+                    if (response.ok) {
+                        showToast('목표가 서버에 저장되었습니다.', 'success');
+                    } else {
+                        showToast('서버 저장 실패, 로컬에 저장됨', 'error');
+                    }
+                } catch (e) {
+                    showToast('서버 저장 실패, 로컬에 저장됨', 'error');
+                }
+            } else {
+                showToast('목표가 저장되었습니다.', 'success');
+            }
             updateTargetSection();
         }
 
