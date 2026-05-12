@@ -1061,22 +1061,23 @@
             <div class="section-content">
                 <div class="card">
                     <div class="chart-tabs">
-                        <button class="chart-tab active" onclick="switchTab('productTop5')">🏷 제품별 Top5</button>
-                        <button class="chart-tab" onclick="switchTab('dailyTrend')">📈 일별 추이</button>
-                        <button class="chart-tab" onclick="switchTab('weekday')">📊 요일별 분석</button>
+                        <button class="chart-tab active" onclick="switchTab('dailyTrend')">📈 일별 추이</button>
+                        <button class="chart-tab" onclick="switchTab('productTop5')">🏷 제품별 Top5</button>
+                        <button class="chart-tab" onclick="switchTab('growthRate')">📊 증감률</button>
                         <button class="chart-tab" onclick="switchTab('fullData')">📋 전체 데이터</button>
                     </div>
 
-                    <div id="productTop5" class="tab-content active">
-                        <div class="chart-container" style="height: 400px;">
-                            <canvas id="top5Chart"></canvas>
+                    <div id="dailyTrend" class="tab-content active">
+                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">최근 30일 일별 전체 매출</p>
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="dailyTotalChart"></canvas>
                         </div>
                     </div>
 
-                    <div id="dailyTrend" class="tab-content">
-                        <label style="font-size: 12px; color: #a78bfa; margin-bottom: 12px; display: block; font-weight: 600; text-transform: uppercase;">상품 선택</label>
+                    <div id="productTop5" class="tab-content">
+                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">상위 5개 제품 최근 30일</p>
                         <div class="product-selector" id="productSelector"></div>
-                        <div class="metric-toggle">
+                        <div class="metric-toggle-hidden" style="display:none;">
                             <label>
                                 <input type="radio" name="metric" value="sales" checked onchange="refreshTrendChart()">
                                 매출
@@ -1091,9 +1092,10 @@
                         </div>
                     </div>
 
-                    <div id="weekday" class="tab-content">
-                        <div class="chart-container">
-                            <canvas id="weekdayChart"></canvas>
+                    <div id="growthRate" class="tab-content">
+                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">최근 7일 vs 이전 7일 증감률</p>
+                        <div class="chart-container" style="height: 500px;">
+                            <canvas id="growthChart"></canvas>
                         </div>
                     </div>
 
@@ -2086,119 +2088,90 @@
             const activeTab = document.querySelector('.tab-content.active');
             const activeId = activeTab ? activeTab.id : 'productTop5';
 
-            if (activeId === 'productTop5') updateTop5Chart();
-            else if (activeId === 'dailyTrend') refreshTrendChart();
-            else if (activeId === 'weekday') updateWeekdayChart();
+            if (activeId === 'dailyTrend') updateDailyTotalChart();
+            else if (activeId === 'productTop5') refreshTrendChart();
+            else if (activeId === 'growthRate') updateGrowthChart();
 
             // Full data table can render hidden
             updateFullDataTable();
         }
 
-        function updateTop5Chart() {
-            const salesByProduct = {};
-            state.filteredData.forEach(r => {
-                const name = cleanName(r['상품명']);
-                if (name) salesByProduct[name] = (salesByProduct[name] || 0) + (r['매출'] || 0);
+        function updateDailyTotalChart() {
+            const { from: f30, to: t30 } = getDateRange('30days');
+            const dailyTotals = {};
+            RAW_DATA.forEach(r => {
+                const d = new Date(r['일자_str']);
+                if (d >= f30 && d <= t30) {
+                    dailyTotals[r['일자_str']] = (dailyTotals[r['일자_str']] || 0) + (r['매출'] || 0);
+                }
             });
+            const sortedDates = Object.keys(dailyTotals).sort();
+            const data = sortedDates.map(d => Math.round(dailyTotals[d] / 10000));
+            const labels = sortedDates.map(d => { const dt = new Date(d); return (dt.getMonth()+1)+'/'+dt.getDate(); });
+            const avg = data.length > 0 ? Math.round(data.reduce((a,b) => a+b, 0) / data.length) : 0;
 
-            const top5 = Object.entries(salesByProduct)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 5);
-
-            const labels = top5.map(e => e[0]);
-            const data = top5.map(e => Math.round(e[1] / 10000));
-            const colors = ['#a78bfa', '#8b5cf6', '#7c3aed', '#6d28d9', '#5b21b6'];
-
-            destroyChart('top5Chart');
-            const ctx = document.getElementById('top5Chart').getContext('2d');
-
-            Chart.defaults.color = '#c3cadb';
-            Chart.defaults.borderColor = '#263059';
-
-            state.charts.top5Chart = new Chart(ctx, {
-                type: 'bar',
+            destroyChart('dailyTotalChart');
+            const ctx = document.getElementById('dailyTotalChart').getContext('2d');
+            Chart.defaults.color = '#c3cadb'; Chart.defaults.borderColor = '#263059';
+            state.charts.dailyTotalChart = new Chart(ctx, {
+                type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: '매출 (만원)',
-                        data: data,
-                        backgroundColor: colors,
-                        borderRadius: 8,
-                        borderSkipped: false,
+                        label: '일별 매출', data: data,
+                        borderColor: '#34d399', backgroundColor: 'rgba(52,211,153,0.08)',
+                        borderWidth: 2.5, tension: 0.3, fill: true, pointRadius: 3,
+                        pointBackgroundColor: '#34d399', pointBorderColor: '#34d399',
+                    }, {
+                        label: '평균 ('+avg.toLocaleString()+'만)',
+                        data: Array(data.length).fill(avg),
+                        borderColor: '#94a3b8', borderWidth: 1, borderDash: [6,4], pointRadius: 0, fill: false,
                     }]
                 },
                 options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(ctx) {
-                                    return ctx.raw.toLocaleString() + '만원';
-                                }
-                            }
-                        }
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 12, padding: 15 } },
+                        tooltip: { callbacks: { label: function(c) { return c.dataset.label+': '+c.raw.toLocaleString()+'만원'; } } }
                     },
                     scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(v) { return v.toLocaleString() + '만'; }
-                            }
-                        },
-                        y: {
-                            ticks: {
-                                font: { size: 12, weight: '600' },
-                                color: '#e2e8f0'
-                            }
-                        }
+                        y: { beginAtZero: false, ticks: { callback: function(v) { return v.toLocaleString()+'만'; } } },
+                        x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 15 } }
                     }
                 }
             });
         }
 
-        function updateWeekdayChart() {
+        function updateGrowthChart() {
             const { from: f7, to: t7 } = getDateRange('7days');
-
-            const byDay = [0, 0, 0, 0, 0, 0, 0];
-            const dayCount = [0, 0, 0, 0, 0, 0, 0];
-
-            state.filteredData.forEach(r => {
+            const f14 = new Date(f7.getTime() - 7*24*60*60*1000);
+            const t14 = new Date(f7.getTime() - 1);
+            const by7 = {}, byPrev = {};
+            RAW_DATA.forEach(r => {
                 const d = new Date(r['일자_str']);
-                if (d >= f7 && d <= t7) {
-                    const day = d.getDay();
-                    byDay[day] += r['매출'] || 0;
-                    dayCount[day] += 1;
-                }
+                const name = cleanName(r['상품명']);
+                if (d >= f7 && d <= t7) by7[name] = (by7[name]||0) + (r['매출']||0);
+                if (d >= f14 && d <= t14) byPrev[name] = (byPrev[name]||0) + (r['매출']||0);
             });
+            const growthData = Object.keys(by7).filter(n => byPrev[n] > 0)
+                .map(n => ({ name: n, pct: Math.round(((by7[n]-byPrev[n])/byPrev[n])*1000)/10 }))
+                .sort((a,b) => b.pct - a.pct);
+            const labels = growthData.map(d => d.name);
+            const data = growthData.map(d => d.pct);
+            const colors = data.map(v => v >= 0 ? '#34d399' : '#f87171');
 
-            const avgByDay = byDay.map((s, i) => dayCount[i] > 0 ? s / dayCount[i] : 0);
-
-            destroyChart('weekdayChart');
-            const ctx = document.getElementById('weekdayChart').getContext('2d');
-
-            Chart.defaults.color = '#c3cadb';
-            Chart.defaults.borderColor = '#263059';
-
-            state.charts.weekdayChart = new Chart(ctx, {
+            destroyChart('growthChart');
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            Chart.defaults.color = '#c3cadb'; Chart.defaults.borderColor = '#263059';
+            state.charts.growthChart = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: ['일', '월', '화', '수', '목', '금', '토'],
-                    datasets: [{
-                        label: '평균 매출 (만원)',
-                        data: avgByDay.map(v => Math.round(v / 10000)),
-                        backgroundColor: '#a78bfa',
-                        borderRadius: 6,
-                    }]
-                },
+                data: { labels: labels, datasets: [{ label: '증감률 (%)', data: data, backgroundColor: colors, borderRadius: 4, borderSkipped: false }] },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return (c.raw>=0?'+':'')+c.raw.toFixed(1)+'%'; } } } },
                     scales: {
-                        y: { beginAtZero: true }
+                        x: { ticks: { callback: function(v) { return (v>=0?'+':'')+v+'%'; } }, grid: { color: '#1e293b' } },
+                        y: { ticks: { font: { size: 11 }, color: '#e2e8f0' }, grid: { display: false } }
                     }
                 }
             });
@@ -2209,81 +2182,133 @@
         }
 
         function refreshTrendChart() {
-            const selectedProducts = Array.from(document.querySelectorAll('#productSelector input[type="checkbox"]:checked')).map(cb => cb.value);
-            const metric = document.querySelector('input[name="metric"]:checked')?.value || 'sales';
+            let selectedProducts = Array.from(document.querySelectorAll('#productSelector input[type="checkbox"]:checked')).map(cb => cb.value);
 
-            if (selectedProducts.length === 0) return;
+            if (selectedProducts.length === 0) {
+                const { from: f30, to: t30 } = getDateRange('30days');
+                const bySales = {};
+                RAW_DATA.forEach(r => {
+                    const d = new Date(r['일자_str']);
+                    if (d >= f30 && d <= t30) {
+                        const name = cleanName(r['상품명']);
+                        bySales[name] = (bySales[name] || 0) + (r['매출'] || 0);
+                    }
+                });
+                selectedProducts = Object.entries(bySales).sort((a, b) => b[1] - a[1]).slice(0, 5).map(e => e[0]);
+            }
 
             const { from: f30, to: t30 } = getDateRange('30days');
             const allDates = new Set();
-
-            state.filteredData.forEach(r => {
+            RAW_DATA.forEach(r => {
                 const d = new Date(r['일자_str']);
                 if (d >= f30 && d <= t30) allDates.add(r['일자_str']);
             });
 
             const sortedDates = Array.from(allDates).sort();
+            const colors = ['#34d399', '#f87171', '#a78bfa', '#fbbf24', '#6ee7ff'];
 
             const datasets = selectedProducts.map((product, idx) => {
-                const colors = ['#a78bfa', '#6ee7ff', '#fbbf24', '#f97316', '#4ade80'];
                 const color = colors[idx % colors.length];
-
                 const data = sortedDates.map(date => {
-                    const records = state.filteredData.filter(r => r['일자_str'] === date && cleanName(r['상품명']) === product);
-                    const total = records.reduce((s, r) => s + (metric === 'sales' ? r['매출'] || 0 : r['수량'] || 0), 0);
-                    return metric === 'sales' ? Math.round(total / 10000) : total;
+                    const records = RAW_DATA.filter(r => r['일자_str'] === date && cleanName(r['상품명']) === product);
+                    const total = records.reduce((s, r) => s + (r['매출'] || 0), 0);
+                    return Math.round(total / 10000);
                 });
-
                 return {
                     label: product,
                     data: data,
                     borderColor: color,
-                    backgroundColor: color + '20',
+                    backgroundColor: color + '15',
                     borderWidth: 2,
                     tension: 0.3,
-                    fill: false
+                    fill: false,
+                    pointRadius: 2,
                 };
+            });
+
+            const labels = sortedDates.map(d => {
+                const dt = new Date(d);
+                return (dt.getMonth() + 1) + '/' + dt.getDate();
             });
 
             destroyChart('trendChart');
             const ctx = document.getElementById('trendChart').getContext('2d');
-
             Chart.defaults.color = '#c3cadb';
             Chart.defaults.borderColor = '#263059';
 
             state.charts.trendChart = new Chart(ctx, {
                 type: 'line',
-                data: {
-                    labels: sortedDates,
-                    datasets: datasets
-                },
+                data: { labels: labels, datasets: datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: true } },
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: {
+                        legend: { display: true, position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) { return ctx.dataset.label + ': ' + ctx.raw.toLocaleString() + '만원'; }
+                            }
+                        }
+                    },
                     scales: {
-                        y: { beginAtZero: true }
+                        y: {
+                            beginAtZero: false,
+                            ticks: { callback: function(v) { return v.toLocaleString() + '만'; } }
+                        },
+                        x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 15 } }
                     }
                 }
             });
         }
 
         function updateFullDataTable() {
-            const byProduct = {};
-            state.filteredData.forEach(r => {
+            const { from: f7, to: t7 } = getDateRange('7days');
+            const { from: f30, to: t30 } = getDateRange('30days');
+            const f14 = new Date(f7.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const t14 = new Date(f7.getTime() - 1);
+
+            const sales7 = {}, sales30 = {}, salesPrev7 = {}, salesAll = {};
+
+            RAW_DATA.forEach(r => {
+                const d = new Date(r['일자_str']);
                 const name = cleanName(r['상품명']);
-                if (!byProduct[name]) byProduct[name] = { count: 0, sales: 0 };
-                byProduct[name].sales += r['매출'] || 0;
-                byProduct[name].count += r['수량'] || 0;
+                const amt = r['매출'] || 0;
+
+                salesAll[name] = (salesAll[name] || 0) + amt;
+                if (d >= f30 && d <= t30) sales30[name] = (sales30[name] || 0) + amt;
+                if (d >= f7 && d <= t7) sales7[name] = (sales7[name] || 0) + amt;
+                if (d >= f14 && d <= t14) salesPrev7[name] = (salesPrev7[name] || 0) + amt;
             });
 
-            const sorted = Object.entries(byProduct)
-                .map(([name, data]) => ({ name, ...data }))
-                .sort((a, b) => b.sales - a.sales);
+            const products = Object.keys(sales7).length > 0 ? Object.keys(sales7) : Object.keys(sales30);
+            const sorted = products
+                .map(name => {
+                    const s7 = sales7[name] || 0;
+                    const sp7 = salesPrev7[name] || 0;
+                    const pct = sp7 > 0 ? Math.round(((s7 - sp7) / sp7) * 1000) / 10 : 0;
+                    return { name, s7, s30: sales30[name] || 0, pct, total: salesAll[name] || 0 };
+                })
+                .sort((a, b) => b.s7 - a.s7);
 
-            let html = '<table><thead><tr><th>순위</th><th>상품명</th><th>수량</th><th>매출</th></tr></thead><tbody>';
-            sorted.forEach((item, idx) => {
-                html += `<tr><td>${idx + 1}</td><td>${item.name}</td><td>${fmtNum(item.count)}</td><td>${fmtEok(item.sales)}</td></tr>`;
+            let html = '<table><thead><tr>';
+            html += '<th style="text-align:left">제품명</th>';
+            html += '<th style="text-align:right">최근 7일</th>';
+            html += '<th style="text-align:right">최근 30일</th>';
+            html += '<th style="text-align:center">7일 증감률</th>';
+            html += '<th style="text-align:right">누적 합계</th>';
+            html += '</tr></thead><tbody>';
+
+            sorted.forEach(item => {
+                const pctClass = item.pct > 0 ? 'positive' : (item.pct < 0 ? 'negative' : '');
+                const pctStr = item.pct > 0 ? '+' + item.pct.toFixed(1) + '%' : item.pct.toFixed(1) + '%';
+                html += '<tr>' +
+                    '<td style="text-align:left; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + item.name + '</td>' +
+                    '<td style="text-align:right">' + fmtEok(item.s7) + '</td>' +
+                    '<td style="text-align:right">' + fmtEok(item.s30) + '</td>' +
+                    '<td style="text-align:center"><span class="' + pctClass + '" style="font-weight:600">' + pctStr + '</span></td>' +
+                    '<td style="text-align:right">' + fmtEok(item.total) + '</td>' +
+                    '</tr>';
             });
             html += '</tbody></table>';
             document.getElementById('fullDataContent').innerHTML = html;
@@ -2304,9 +2329,9 @@
 
             // Re-render charts after tab is visible (Chart.js needs visible canvas)
             setTimeout(() => {
-                if (tabName === 'productTop5') updateTop5Chart();
-                else if (tabName === 'dailyTrend') refreshTrendChart();
-                else if (tabName === 'weekday') updateWeekdayChart();
+                if (tabName === 'dailyTrend') updateDailyTotalChart();
+                else if (tabName === 'productTop5') refreshTrendChart();
+                else if (tabName === 'growthRate') updateGrowthChart();
             }, 50);
         }
 
