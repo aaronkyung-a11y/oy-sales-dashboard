@@ -1641,9 +1641,9 @@
                 return;
             }
 
-            // Today
+            // Today (use RAW_DATA for target metrics)
             const today = getLastDataDate();
-            const todayData = state.filteredData.filter(r => new Date(r['일자_str']).toDateString() === today.toDateString());
+            const todayData = RAW_DATA.filter(r => new Date(r['일자_str']).toDateString() === today.toDateString());
             const todaySales = todayData.reduce((sum, r) => sum + (r['매출'] || 0), 0);
             const todayRate = Math.round((todaySales / state.targetDaily) * 100);
 
@@ -1652,7 +1652,7 @@
             updateProgressBar('todayProgress', todayRate);
 
             // 7-day average
-            const last7 = state.filteredData.filter(r => {
+            const last7 = RAW_DATA.filter(r => {
                 const d = new Date(r['일자_str']);
                 return d >= new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000) && d <= today;
             });
@@ -1667,7 +1667,7 @@
 
             // Month average
             const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-            const monthData = state.filteredData.filter(r => {
+            const monthData = RAW_DATA.filter(r => {
                 const d = new Date(r['일자_str']);
                 return d >= monthStart && d <= today;
             });
@@ -1693,8 +1693,8 @@
             const { from: f30, to: t30 } = getDateRange('30days');
             const { from: f7, to: t7 } = getDateRange('7days');
 
-            // Last 30 days
-            const data30 = state.filteredData.filter(r => {
+            // Last 30 days (use RAW_DATA to avoid filter interference)
+            const data30 = RAW_DATA.filter(r => {
                 const d = new Date(r['일자_str']);
                 return d >= f30 && d <= t30;
             });
@@ -1719,8 +1719,8 @@
                 document.getElementById('sales30dComp').textContent = '이전 기간 데이터 부족';
             }
 
-            // Last 7 days
-            const data7 = state.filteredData.filter(r => {
+            // Last 7 days (use RAW_DATA to avoid filter interference)
+            const data7 = RAW_DATA.filter(r => {
                 const d = new Date(r['일자_str']);
                 return d >= f7 && d <= t7;
             });
@@ -1744,8 +1744,8 @@
                 document.getElementById('sales7dComp').textContent = '이전 기간 데이터 부족';
             }
 
-            // Today
-            const todayData = state.filteredData.filter(r => new Date(r['일자_str']).toDateString() === today.toDateString());
+            // Today (use RAW_DATA to avoid filter interference)
+            const todayData = RAW_DATA.filter(r => new Date(r['일자_str']).toDateString() === today.toDateString());
             const salesToday = todayData.reduce((s, r) => s + (r['매출'] || 0), 0);
 
             const yesterday = new Date(today);
