@@ -1490,8 +1490,14 @@
 
                     if (records.length > 0) {
                         RAW_DATA = records;
+                        state.data = RAW_DATA;   // 새 데이터 기준으로 '마지막 날짜' 계산
                         updateProductFilter();
-                        refreshDashboard();
+                        // 업로드로 마지막 날짜가 바뀌므로 기간을 다시 계산 (직접 지정한 기간이면 그대로 유지)
+                        if (state.currentDateRange === 'custom') {
+                            refreshDashboard();
+                        } else {
+                            setDateRange(state.currentDateRange);
+                        }
 
                         // Upload to API
                         uploadDataToAPI(records);
